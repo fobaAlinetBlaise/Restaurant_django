@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Blog {% endblock %}
+{% block extra_css %} {% endblock %}
+{% block content %}
+ <!--RESERVATION BUTTON AREA-->
+ <section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>Blog</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--RESERVATION BUTTON AREA END-->
+
+
+
+ <!--BLOG AREA-->
+ <section class="blog-area section-padding" id="blog">
+    <div class="blog-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            {% for blog in blogs %}
+            <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12" style="margin-bottom:20px">
+                <div class="single-post text-center ">
+                    <div class="blog-post-img ">
+                        {% if blog.photo %}
+                              <img src="{{blog.photo.url}}" alt="" style="width:400px; height:300px ">
+                        {% else %}
+                             <img src="{% static 'assets/img/menu/menu_6.jpg' %}" alt="">
+                         {% endif %}
+                    </div>
+                    <div class="post-details">
+                        <h3><a href="{% url 'blogdetail' slug=blog.slug %}">{{blog.name|title }}</a></h3>
+                        {% comment %} safe permet de respecter les paragraphes {% endcomment %}
+                        <p>{{blog.description|safe|truncatechars:150}} </p>
+                        <p class="post-meta"><a href="#">{{blog.Timestamp|date:"d M Y H:i:s"}} </a> - <a href="#">{{blog.comment_blog.count}} Comments</a></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+</section>
+<!--BLOG AREA END-->
+{% endblock %}
+
+{% block extra_javascript %} {% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Restaurant {% endblock %}
+{% block extra_css %} {% endblock %}
+{% block content %}
+ <!--RESERVATION BUTTON AREA-->
+ <section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>Restaurant</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+    <!--MENUS AREA-->
+    <section class="menus-area section-padding" id="menu">
+        <div class="container wow fadeIn">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <div class="food-menu-list-menu">
+                        <form action="#" method="GET">
+                            <input type="search" name="q" id="q" placeholder="Search...">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row food-menu-list">
+                {% for restaurant in restaurants %}
+                <div class="mix col-md-6 col-lg-6 col-sm-12 col-xs-12 single-menu breakfast">
+                    <div class="single-menu-details">
+                        
+                        <div class="food-menu-img">
+                          <a href="{% url 'restaurant_detail' id=restaurant.id %}" >  {% if restaurant.photo %}
+                            <img src="{{restaurant.photo.url}}" alt="">
+                        {% else %}
+                            <img src="{% static 'assets/img/menu/menu_6.jpg' %}" alt="">
+                        {% endif %}
+                          </a>
+                        </div>
+                        <div class="food-menu-details">
+                            <a href="{% url 'restaurant_detail' id=restaurant.id %}" >
+                            <h3>{{restaurant.name}}</h3>
+                            </a>
+                            <p class="menu-speacification">Email: <span> {{restaurant.user.email}} </span>
+                                Teléphone:
+                                {% if restaurant.phone %}
+                                  <span>- {{restaurant.phone}}</span>
+                                {% else %}
+                                <span class="text-danger">- Manquant</span>
+                                {% endif %}
+                            </p>
+                            <p class="menu-speacification">Jour debut: <span>{{restaurant.user_profil.start_date}} </span> Jour Fin: <span>- {{restaurant.end_date}}</span></p>
+                            <p class="menu-speacification">Adresse: <span>{{restaurant.address}}</span></p>
+                            {% comment %} <p class="menu-speacification"><span>{{restaurant.description}}</span> <span>- Chilli</span> <span>- Sesame</span></p> {% endcomment %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_javascript %} {% endblock %}

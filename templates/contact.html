@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% comment %} permet de mettre d'utiliser bootstrap et 
+utilisant lui aussi les trucs en bas dans la partie form {% endcomment %}
+{% load crispy_forms_tags %}
+{% block title %}Contact {% endblock %}
+{% block extra_css %} {% endblock %}
+{% block content %}
+ <!--RESERVATION BUTTON AREA-->
+ <section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px; height:120px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>Contact Us</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!--BLOG AREA-->
+    <section class="blog-page blog-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    
+                    <div class="comment-box wow fadeIn">
+						<div class="text-center">{% include 'message.html' %}</div>
+						<form action="", method="POST">{% csrf_token %}
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										{{ form.name|as_crispy_field}}
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										{{ form.email|as_crispy_field}}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										{{ form.sujet|as_crispy_field}}
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										{{ form.phone|as_crispy_field}}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<div class="form-group">
+										{{ form.message|as_crispy_field}}
+									</div>
+								</div>
+							</div>
+					
+							<button type="submit">Envoyer</button>
+						</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--BLOG AREA END-->
+<!--RESERVATION BUTTON AREA END-->
+
+{% endblock %}
+
+{% block extra_javascript %} {% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Restaurant {% endblock %}
+{% block extra_css %} {% endblock %}
+{% block content %}
+<section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>Restaurant</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="blog-page blog-area section-padding">
+    <div class="container">
+        <div class="single-sidebar-widget">
+            <form method="GET">
+                <input type="search" name="q" id="q" placeholder="Search...">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+
+
+                <div class="row">
+                    <div class="container wow fadeIn">
+                        {% comment %} menu_data est use dans customer.js {% endcomment %}
+                        <div class="row menu_data">
+                            {% for men in menus %}
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="margin-bottom:30px">
+                                {% comment %} menu_id est use dans customer.js {% endcomment %}
+                                <form class="menu_data" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{men.id}}" class="menu_id">
+                                <div class="single-promotions">
+                                    <div class="promotions-img">
+                                        <img src="{{men.photo.url}}" style="width:400px; height:300px " alt="">
+                                    </div>
+                                    <div class="promotions-details">
+                                        <h3>{{men.name}}</h3>
+                                        <h5 class="text-primary">Prix: {{men.prix}} Fcfa</h5>
+                                        <button class="read-more addToCartBtn"  style="font-size: 10px;width: 100px;">Ajout Panier</button>
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}

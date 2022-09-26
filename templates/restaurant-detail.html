@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% comment %} permet de mettre d'utiliser bootstrap et 
+utilisant lui aussi les trucs en bas dans la partie form {% endcomment %}
+{% load crispy_forms_tags %}
+{% block title %}{{restaurant.name}} {% endblock %}
+{% block extra_css %} {% endblock %}    
+{% block content %}
+<section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px; height:120px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>{{restaurant.name}} </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--BLOG AREA-->
+<section class="blog-page blog-area section-padding">
+    <div class="container">
+        <div class="row menu_data" >
+            <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12">
+
+
+                <div class="row">
+                    <div class="container wow fadeIn">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="area-title text-center">
+                                    <h2>Menus </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" >
+                            <div class="menu-discount-offer col-md-9 col-lg-9 col-sm-9 col-xs-9">
+                                {% for menu in menus %}
+                                <div class="single-promotions">
+                                    <form class="menu_data" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{men.id}}" class="menu_id">
+                                        <div class="single-promotions">
+                                            <div class="promotions-img">
+                                                <img src="{{menu.photo.url}}" style="width:400px; height:300px " alt="">
+                                            </div>
+                                            <div class="promotions-details">
+                                                <h3>{{menu.name}}</h3>
+                                                <h5 class="text-primary">Prix: {{menu.prix}} Fcfa</h5>
+                                                <button class="read-more addToCartBtn"  style="font-size: 10px;width: 100px;">Ajout Panier</button>
+                                            </div>
+                                        </div>
+                                         </form>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div> </br></br>
+                
+                <div class="single-blog-page single-blog text-justify wow fadeIn">
+                    <div class="">
+                        {% if restaurant.photo %}
+                            <img src="{{restaurant.photo.url}}" style="width:1000px; height:100% " alt="">
+                        {% else %}
+                            <img src="{% static 'assets/img/menu/menu_6.jpg' %}" alt="" style="width:1000px; height:100% ">
+                        {% endif %}
+                    </div>
+                    <div class="blog-details">
+                        <div class="title-and-meta">
+                            <h3><a href="single-blog.html"> <strong>Restaurant:</strong>  {{restaurant.name}} </a></h3>
+                            <p class="post-meta"><strong>Date d'Ouverture:</strong>  {{restaurant.start_date}}   </br> 
+                                <strong>Date de fermeture:</strong> {{restaurant.end_date}} </br>
+                                <strong>Email:</strong> {{restaurant.user.email}}</p>
+                        </div>
+                        <div class="blog-content">
+                            <p>{{restaurant.description|safe}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                <div class="blog-sidebar">
+                    <div class="single-sidebar-widget">
+                        <form method="GET">
+                            <input type="search" name="q" id="q" placeholder="Search...">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="single-sidebar-widget catagories-widget wow fadeIn">
+                        <h4>Catagories</h4>
+                        <ul>
+                            {% for categorie in categories %}
+                                <li>
+                                    <a href="?categorie={{categorie.slug}} "><i class="fa fa-angle-right"></i>{{categorie.name}} </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--BLOG AREA END-->
+
+
+
+
+{% endblock %}
+
+{% block extra_javascript %} {% endblock %}

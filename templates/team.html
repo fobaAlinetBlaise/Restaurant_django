@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Teams {% endblock %}
+{% block extra_css %} {% endblock %}
+{% block content %}
+ <!--RESERVATION BUTTON AREA-->
+ <section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>Teams</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--RESERVATION BUTTON AREA END-->
+<!--TEAM AREA-->
+<section class="team-area section-padding" id="team" >
+    <div class="container wow fadeIn">
+         <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 team-slider">
+                {% for team in teams %}
+                    <div class="single-team-member text-center">
+                        <div class="team-member-img ">
+                            {% if team.user.photo %}
+                            <img src="{{team.user.photo.url }}" style="width:400px; height:300px " alt="{{tea.position}}">
+                            {% else %}
+                                <img src="{% static 'static/assets/img/team/team-3.jpg' %}" style="width:400px; height:310px " alt=" Aucun image ">
+                            {% endif %}
+                        </div>
+                        <div class="member-details">
+                            <h3>{{team.user.user.first_name}} {{team.user.user.last_name}} </h3>
+                        </div>
+                        <div class="member-details">
+                            <h3>{{team.position}} </h3>
+                            <p>{{team.Timestamp|date:'d M Y'}} </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+    </div>
+</section>
+<!--TEAM AREA END-->
+{% endblock %}
+
+{% block extra_javascript %} {% endblock %}

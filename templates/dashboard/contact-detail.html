@@ -1,0 +1,51 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content  %}
+<div class="tab-content pt-4 text-muted">
+    <div class="tab-pane active" id="overview-tab" role="tabpanel">
+        <div class="row">
+            <div class="col-xxl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-5">Details</h5>
+                    </div>
+                    
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Details</h5>
+                        <div class="table-responsive">
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="ps-0" scope="row">Nom et Prenoms :</th>
+                                        <td class="text-muted">{{contact.name}} </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="ps-0" scope="row">Date:</th>
+                                        <td class="text-muted">{{contact.Timestamp|date:"d M Y"}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="ps-0" scope="row">E-mail :</th>
+                                        <td class="text-muted">{{contact.email}} </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="ps-0" scope="row">Objet :</th>
+                                        <td class="text-muted">{{contact.sujet}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="ps-0" scope="row">Message :</th>
+                                        <td class="text-muted">{{contact.message}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+                <!--end card-->
+            </div>
+    </div>
+{% endblock %}

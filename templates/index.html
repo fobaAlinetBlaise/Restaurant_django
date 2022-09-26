@@ -1,0 +1,155 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Restaurant {% endblock %} {% block extra_css %} {% endblock %} {% block content %}
+
+<!--HHOME SLIDER AREA-->
+<div class="slider-area" style="margin-top:-660px">
+    <div class="pogoSlider">
+        <div class="pogoSlider-slide" data-transition="fade" data-duration="1500" style="background:url({% static 'assets/img/slider/slide_1.jpg' %}) no-repeat scroll 0 0 / cover;">
+            <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Bienvenue au</h2>
+            <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500"><span>Plateforme de gestion des restaurants</span></h1>
+            <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'restaurant'%} " data-toggle="modal">Voir Maintenant</a></h3>
+        </div>
+        <div class="pogoSlider-slide" data-transition="fade" style="background:url({% static 'assets/img/slider/slide_2.jpg' %}) no-repeat scroll 0 0 / cover;">
+            <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Nos menus</h2>
+            <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500">Voir ce qu’il y a <span>Nouveau</span> Aujourd’hui</h1>
+            <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'menu'%}">Menu du jour</a></h3>
+        </div>
+    </div>
+</div>
+<!--HOME SLIDER AREA END-->
+
+<!--ABOUT AREA-->
+<!--ABOUT AREA END-->
+
+
+
+
+
+<section class="blog-page blog-area section-padding">
+    <div class="container">
+        <div class="row" >
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div class="container wow fadeIn">
+                        {% comment %} menu_data est use dans customer.js {% endcomment %}
+                        <div class="row">
+                            {% for men in menus %}
+                            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="margin-bottom:30px">
+                                {% comment %} menu_id est use dans customer.js {% endcomment %}
+                                <form class="menu_data" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{men.id}}" class="menu_id">
+                                <div class="single-promotions">
+                                    <div class="promotions-img">
+                                        <img src="{{men.photo.url}}" style="width:400px; height:300px " alt="">
+                                    </div>
+                                    <div class="promotions-details">
+                                        <h3>{{men.name}}</h3>
+                                        <h5 class="text-primary">Prix: {{men.prix}} Fcfa</h5>
+                                        <button class="read-more addToCartBtn"  style="font-size: 10px;width: 100px;">Ajout Panier</button>
+                                    </div>
+                                </div>
+                                 </form>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+</section>
+<!--SPEACIAL PROMOTIONS AREA END-->
+
+
+
+
+
+<!--MENUS AREA-->
+<div class="reservation-button-area-bg " data-stellar-background-ratio="0.6 "></div>
+<div class="container ">
+    <div class="row ">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
+            <div class="resarvation-from-button text-center wow fadeIn ">
+                <h2>Restaurant</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<!--MENUS AREA-->
+<section class="menus-area section-padding " id="menu ">
+    <div class="container wow fadeIn ">
+        <div class="row ">
+        </div>
+        <div class="row food-menu-list ">
+            {% for restaurant in restaurants %}
+            <div class="mix col-md-6 col-lg-6 col-sm-12 col-xs-12 single-menu breakfast ">
+                <div class="single-menu-details ">
+
+                    <div class="food-menu-img ">
+                        <a href="{% url 'restaurant_detail' id=restaurant.id %} ">  {% if restaurant.photo %}
+                                <img src="{{restaurant.photo.url}} " alt=" " >
+                            {% else %}
+                                <img src="{% static 'assets/img/menu/menu_6.jpg' %} " alt=" ">
+                            {% endif %}
+                              </a>
+                    </div>
+                    <div class="food-menu-details ">
+                        <h3>{{restaurant.name}}</h3>
+                        <p class="menu-speacification ">Email: <span> {{restaurant.email}} </span> <br /> Teléphone: {% if restaurant.phone %}
+                            <span>- {{restaurant.phone}}</span> {% else %}
+                            <span class="text-danger ">- Manquant</span> {% endif %}
+                        </p>
+                        <p class="menu-speacification ">Jour debut: <span>{{restaurant.user_profil.start_date}} </span> <br />Jour Fin: <span>- {{restaurant.end_date}}</span></p>
+                        <p class="menu-speacification ">Adresse: <span>{{restaurant.address}}</span></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'restaurant' %} " class="read-more ">Voir pLus</a>
+    </div>
+</section>
+<!--MENUS AREA END-->
+
+<!--BLOG AREA-->
+<section class="blog-area section-padding " id="blog ">
+    <div class="blog-area-bg " data-stellar-background-ratio="0.6 "></div>
+    <div class="container wow fadeIn ">
+        <div class="row ">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
+                <div class="area-title text-center ">
+                    <h2>Blog</h2>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row post-slider ">
+            {% for blog in blogs %}
+            <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 ">
+                <div class="single-post text-center ">
+                    {% if blog.photo %}
+                    <img src="{{blog.photo.url}} " alt=" " style="width:400px; height:300px "> {% else %}
+                    <img src="{% static 'assets/img/menu/menu_6.jpg' %} " alt=" " style="width:400px; height:300px "> {% endif %}
+                    <div class="post-details ">
+                        <h3><a href="{% url 'blogdetail' slug=blog.slug %} ">{{blog.name}} </a></h3>
+                        <p>{{blog.description|safe|truncatechars:100}} </p>
+                        <p class="post-meta "><a href="# ">{{blog.Timestamp|date:"d M Y "}} </a> - <a href="# ">{{blog.comment_blog.count}} Comments</a></p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row ">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
+                <div class="area-title text-center ">
+                    <a href="{% url 'blog' %} " class="read-more ">Voir pLus</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--BLOG AREA END-->
+
+
+{% endblock %}

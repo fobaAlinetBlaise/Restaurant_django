@@ -1,0 +1,130 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content  %}
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Contacts</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Panneau</a></li>
+                            <li class="breadcrumb-item active">Contacts</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            {% include 'message.html' %}
+
+            <!--end col-->
+            <div class="col-xxl-9">
+                <div class="card" id="contactList">
+                    <div class="card-header">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="search-box">
+                                    <input type="text" class="form-control search" placeholder="Search for contact...">
+                                    <i class="ri-search-line search-icon"></i>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="card-body">
+                       
+                        <div>
+                            <div class="table-responsive table-card mb-3">
+                                <table class="table align-middle table-nowrap mb-0" id="customerTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col" style="width: 50px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="checkAll" value="option">
+                                                </div>
+                                            </th>
+                                            <th class="sort" data-sort="name" scope="col">Nom</th>
+                                            <th class="sort" data-sort="email_id" scope="col">Email ID</th>
+                                            <th class="sort" data-sort="phone" scope="col">Sujet</th>
+                                            <th class="sort" data-sort="tags" scope="col">Date</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="list form-check-all">
+                                        {% for contact in contacts %}
+                                        {% include 'dashboard/modals/contact-delete.html' with contact=contact %}
+                                        <tr>
+                                            <th scope="row">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="chk_child" value="option1">
+                                                </div>
+                                            </th>
+                                            <td class="id" style="display:none;"><a href="javascript:void(0);" class="fw-medium link-primary">#VZ001</a></td>
+                                            <td class="name">
+                                                <div class="d-flex align-items-center">
+                                                    
+                                                    <div class="flex-grow-1 ms-2 name">{{contact.name}} </div>
+                                                </div>
+                                            </td>
+                                            <td class="email_id">{{contact.email}} </td>
+                                            <td class="lead_score">{{contact.sujet|safe|truncatechars:25}} </td>
+                                            <td class="date">{{contact.Timestamp|date:'d M Y'}}  <small class="text-muted">{{contact.Timestamp|date:'H:i'}}</small></td>
+                                            <td>
+                                                <ul class="list-inline hstack gap-2 mb-0">
+                                                    <li class="list-inline-item">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="ri-more-fill align-middle"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                <li><a href="{% url 'dashboard:contact_detail' contact.id %} " class="dropdown-item remove-item-btn"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> Details</a></li>
+                                                                <li class="text-danger"><a class="dropdown-item remove-item-btn text-danger" data-bs-toggle="modal" data-bs-target="#contact-delete"><i class="text-dange ri-delete-bin-fill align-bottom me-2 text-muted"></i> Supprimer</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="noresult" style="display: none">
+                                    <div class="text-center">
+                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:75px;height:75px"></lord-icon>
+                                        <h5 class="mt-2">Sorry! No Result Found</h5>
+                                        <p class="text-muted mb-0">We've searched more than 150+ contacts We did not find any contacts for you search.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <div class="pagination-wrap hstack gap-2">
+                                    <a class="page-item pagination-prev disabled" href="#">
+                                        Previous
+                                    </a>
+                                    <ul class="pagination listjs-pagination mb-0"></ul>
+                                    <a class="page-item pagination-next" href="#">
+                                        Next
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end card-->
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+    </div>
+    <!-- container-fluid -->
+</div>
+{% endblock %}

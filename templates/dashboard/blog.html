@@ -1,0 +1,184 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Blog {% endblock %}
+{% block extra_css %} 
+
+    <!-- glightbox css -->
+    <link rel="stylesheet" href="{% static 'dashboard/assets/libs/glightbox/css/glightbox.min.css' %}">
+
+{% endblock %}
+
+
+
+{% block content  %}
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                        <h4 class="mb-sm-0">Blog</h4>
+
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Panneau</a></li>
+                                <li class="breadcrumb-item active">Blog</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+
+
+           
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-sm-4">
+                            <div class="search-box">
+                                <input type="text" class="form-control" placeholder="Search for name, tasks, projects or something...">
+                                <i class="ri-search-line search-icon"></i>
+                            </div>
+                        </div>
+                        <!--end col-->
+                        <div class="col-sm-auto ms-auto">
+                            <div class="list-grid-nav hstack gap-1">
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addmembers"><i class="ri-add-fill me-1 align-bottom"></i><a href="{% url 'dashboard:blog_add' %}"  class="text-white"> Ajouter</a></button>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!--end row-->
+                </div>
+            </div>
+
+
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="text-center">
+                                        <ul class="list-inline categories-filter animation-nav" id="filter">
+                                            {% include 'message.html' %}
+                                            <li class="list-inline-item">
+                                                <a class="categories active" href="?categorie=all">All</a>
+                                            </li>
+                                            {% for blogcategorie in blogcategories %}
+                                                <li class="list-inline-item"><a href="?categorie={{blogcategorie.slug}}" class="categories" data-filter=".project">{{blogcategorie.name  }} </a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+
+                                    <div class="row gallery-wrapper">
+                                          {% for blog in blogs %}
+                                        <div class="element-item col-xxl-3 col-xl-4 col-sm-6 project designing development" data-category="designing development">
+                                            <div class="gallery-box card">
+                                                <div class="gallery-container">
+                                                    {% include 'dashboard/modals/blog-delete.html' with blog=blog %}
+                                                    <div class="col team-settings">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="bookmark-icon flex-shrink-0 me-2">
+                                                                    <input type="checkbox" id="favourite3" class="bookmark-input bookmark-hide" checked>
+                                                                    <label for="favourite3" class="btn-star">
+                                                                        <svg width="20" height="20">
+                                                                            <use xlink:href="#icon-star" />
+                                                                        </svg>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col text-end dropdown">
+                                                                <a href="javascript:void(0);" id="dropdownMenuLink5" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    <i class="ri-more-fill fs-17"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink5">
+                                                                    <li><a href="{% url 'dashboard:blog_detail' slug=blog.slug %}" class="dropdown-item remove-item-btn"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> Details</a></li>
+                                                                    <li><a class="dropdown-item" href="{% url 'dashboard:blog_modif' slug=blog.slug %} "><i class="ri-star-line me-2 align-middle"></i>Modifier</a></li>
+                                                                    <li class="text-danger"><a class="dropdown-item remove-item-btn text-danger" data-bs-toggle="modal" data-bs-target="#blog-delete"><i class="text-dange ri-delete-bin-fill align-bottom me-2 text-muted"></i> Supprimer</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% if blog.photo %}
+                                                        <a class="image-popup" href="{{blog.photo.url}}" title="">
+                                                            <img class="gallery-img img-fluid mx-auto" src="{{blog.photo.url}}" alt="" style="height:300px; width:100%"/>
+                                                            <div class="gallery-overlay">
+                                                                <h5 class="overlay-caption">{{blog.name}} </h5>
+                                                            </div>
+                                                        </a>
+                                                    {% else %}
+                                                        <a class="image-popup" href="{% static 'dashboard/assets/images/small/img-1.jpg' %}" title="">
+                                                            <img class="gallery-img img-fluid mx-auto" src="{% static 'dashboard/assets/images/small/img-1.jpg' %}" style="height:300px; width:100%" alt="" />
+                                                            <div class="gallery-overlay">
+                                                                <h5 class="overlay-caption">{{blog.name}} </h5>
+                                                            </div>
+                                                        </a>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="box-content">
+                                                    <div class="d-flex align-items-center mt-1">
+                                                        {% if blog.user.user.username %}
+                                                        <div class="flex-grow-1 text-muted">Par <a href="#" class="text-body text-truncate">{{blog.user.user.username}}</a></div>
+                                                        {% else %}
+                                                        <div class="flex-grow-1 text-muted">Par <a href="#" class="text-body text-truncate">Administrateur</a></div>
+                                                        {% endif %}
+                                                        <div class="flex-shrink-0">
+                                                            <div class="d-flex gap-3">
+                                                                <button type="button" class="btn btn-sm fs-12 btn-link text-body text-decoration-none px-0">
+                                                                    <i class="ri-question-answer-fill text-muted align-bottom me-1"></i>{{blog.comment_blog.count}} Comments
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        <!-- end col -->
+                                    </div>
+                                    {% include 'dashboard/blog-pagination.html' %}
+                                    <!-- end row -->
+
+                                </div>
+                            </div>
+                            <!-- end row -->
+                        </div>
+                        <!-- ene card body -->
+                    </div>
+                    <!-- end card -->
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    
+
+
+
+
+{% endblock %}
+
+
+{% block extra_javascript %} 
+    <!-- glightbox js -->
+    <script src="{% static 'dashboard/assets/libs/glightbox/js/glightbox.min.js' %}"></script>
+
+    <!-- isotope-layout -->
+    <script src="{% static 'dashboard/assets/libs/isotope-layout/isotope.pkgd.min.js' %}"></script>
+
+    <script src="{% static 'dashboard/assets/js/pages/gallery.init.js' %}"></script>
+    {% endblock %}

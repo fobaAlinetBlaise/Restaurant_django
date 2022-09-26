@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Blog {% endblock %}
+{% block extra_css %} {% endblock %}
+{% block content %}
+<section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px; height:120px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>Detail d'un blog</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <!--BLOG AREA-->
+    <section class="blog-page blog-area section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9 col-lg-9 col-sm-12 col-xs-12">
+                    <div class="single-blog-page single-blog text-justify wow fadeIn">
+                        <div class="">
+                            {% if blog.photo %}
+                              <img src="{{blog.photo.url}}" alt="">
+                            {% else %}
+                              <img src="{% static 'assets/img/menu/menu_6.jpg' %}" alt="">
+                             {% endif %}
+                        </div>
+                        <div class="blog-details">
+                            <div class="title-and-meta">
+                                <h3><a href="single-blog.html"> {{blog.name}} </a></h3>
+                                <p class="post-meta">By <a href="#">{{blog.user.user.username}} </a> | <a href="#">{{blog.Timestamp|date:"d M Y"}} </a></p>
+                            </div>
+                            <div class="blog-content">
+                                <p>{{blog.description|safe}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blog-comments wow fadeIn">
+                        <h4>Comments <a href="#" class="comment-count">({{blog.comment_blog.count}})</a></h4>
+                        <div class="blog-comments wow fadeIn">
+                            {% for comment in blog.comment_blog.all %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="comment-author-img alignleft">
+                                        <img src="{% static 'assets/img/blog/thumb/3.jpg' %}" alt="">
+                                    </div>
+                                    <div class="comment-meta">
+                                        <h5>{{comment.name}}</h5>
+                                        <p class="comment-date-count"><a href="#">{{comment.Timestamp|date:"d M Y"}}</a></p>
+                                    </div>
+                                    <p>{{comment.message}}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="comment-box wow fadeIn">{% include 'message.html' %}
+                        <h4>Leave A Comment</h4>
+                        <form action="#" method="POST">{% csrf_token %}
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form.name|as_crispy_field}}
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form.email|as_crispy_field}}
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form.message|as_crispy_field}}
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="submit">Posté</button>
+                                </div>
+                            
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-12 col-xs-12">
+                    <div class="blog-sidebar">
+                        <div class="single-sidebar-widget">
+                            <form action="{% url 'blog' %}" method="GET">
+                                <input type="search" name="q" id="q" placeholder="Search...">
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                        <div class="single-sidebar-widget catagories-widget wow fadeIn">
+                            <h4>Catagories</h4>
+                            <ul>
+                                {% for blogcategorie in blogcategories %}
+                                    <li>
+                                        <a href="{% url 'blog' %}?categorie={{blogcategorie.slug}} "><i class="fa fa-angle-right"></i>{{blogcategorie.name}} </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--BLOG AREA END-->
+<!--BLOG AREA END-->
+{% endblock %}
+
+{% block extra_javascript %} {% endblock %}

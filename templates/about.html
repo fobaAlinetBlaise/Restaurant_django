@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}About {% endblock %}
+{% block extra_css %} {% endblock %}
+{% block content %}
+ <!--RESERVATION BUTTON AREA-->
+ <section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px; height:120px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>A Propos de Nous</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--RESERVATION BUTTON AREA END-->
+
+ <!--ABOUT AREA-->
+ <section class="about-area section-padding" id="about">
+    <div class="container wow fadeIn">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="area-title text-center">
+                    <h2>Notre Histoire</h2>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                <div class="about-content">
+                    <p><span class="big-text">M</span>orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                <div class="right-about-content">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="about-author-sign text-center">
+                    <img src="{% static 'assets/img/about/about_sign.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--ABOUT AREA END-->
+{% endblock %}
+
+{% block extra_javascript %} {% endblock %}

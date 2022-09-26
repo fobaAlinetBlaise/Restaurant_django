@@ -1,0 +1,55 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Detail de la categorie d'un Blog {% endblock %}
+{% block extra_css %} 
+
+    <!-- glightbox css -->
+    <link rel="stylesheet" href="{% static 'dashboard/assets/libs/glightbox/css/glightbox.min.css' %}">
+
+{% endblock %}
+{% block content  %}
+<div class="tab-content pt-4 text-muted">
+    <div class="tab-pane active" id="overview-tab" role="tabpanel">
+        <div class="row">
+            <div class="col-xxl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-5">Details</h5>
+                    </div>
+                    
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Details</h5>
+                        <div class="table-responsive">
+                            <table class="table table-borderless mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th class="ps-0" scope="row">Categorie du blog:</th>
+                                        <td class="text-muted">{{blogcategorie.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="ps-0" scope="row">Date d'ajout :</th>
+                                        <td class="text-muted">{{blogcategorie.Timestamp|date:'d M Y'}} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr />
+                        </div>
+                    </div><!-- end card body -->
+                </div><!-- end card -->
+                <!--end card-->
+            </div>
+    </div>
+{% endblock %}
+
+{% block extra_javascript %} 
+    <!-- glightbox js -->
+    <script src="{% static 'dashboard/assets/libs/glightbox/js/glightbox.min.js' %}"></script>
+
+    <!-- isotope-layout -->
+    <script src="{% static 'dashboard/assets/libs/isotope-layout/isotope.pkgd.min.js' %}"></script>
+
+    <script src="{% static 'dashboard/assets/js/pages/gallery.init.js' %}"></script>
+    {% endblock %}
