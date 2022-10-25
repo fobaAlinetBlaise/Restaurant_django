@@ -28,29 +28,23 @@
         </div>
         <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-
-
                 <div class="row">
                     <div class="container wow fadeIn">
-                        {% comment %} menu_data est use dans customer.js {% endcomment %}
+                        <div class="text-center">{% include 'message.html' %}</div>
                         <div class="row menu_data">
                             {% for men in menus %}
                             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" style="margin-bottom:30px">
-                                {% comment %} menu_id est use dans customer.js {% endcomment %}
-                                <form class="menu_data" method="POST">
-                                {% csrf_token %}
                                 <input type="hidden" value="{{men.id}}" class="menu_id">
                                 <div class="single-promotions">
                                     <div class="promotions-img">
-                                        <img src="{{men.photo.url}}" style="width:400px; height:300px " alt="">
+                                        <img src="{{men.image.url}}" style="width:400px; height:300px " alt="">
                                     </div>
                                     <div class="promotions-details">
                                         <h3>{{men.name}}</h3>
-                                        <h5 class="text-primary">Prix: {{men.prix}} Fcfa</h5>
-                                        <button class="read-more addToCartBtn"  style="font-size: 10px;width: 100px;">Ajout Panier</button>
+                                        <h5 class="text-primary">Prix: {{men.price}} Fcfa</h5>
+                                        <button class="read-more"  style="font-size: 10px;width: 100px;"><a href="{% url 'cart_add' men.id %}">Add To Cart</a></button>
                                     </div>
                                 </div>
-                            </form>
                             </div>
                             {% endfor %}
                         </div>

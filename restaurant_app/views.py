@@ -1,11 +1,13 @@
 from multiprocessing import context
-from re import template
+from tkinter import Menubutton
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import *
 from .models import *
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
 
 # Create your views here.
 def home_view(request):
@@ -186,9 +188,73 @@ def panier_add_view(request):
     
    
 def panier_view(request):
-    cart =Panier.objects.filter(user=request.user)
+    cart =Panier.objects.filter(user=request.user.id)
     context = {'cart':cart}
     template ='cart.html'
     return render(request, template, context)
 
 
+
+
+
+
+
+
+@login_required
+def cart_add(request, id):
+    cart = Cart(request)
+    product = Menu.objects.get(id=id)
+    check = cart.add(product=product)
+    # if check:
+    #     messages.success(request, "Ajouter avec succe")
+    # else:
+    #     messages.error(request, "Le produit existe déjà au panier")
+    return redirect(request.META['HTTP_REFERER'])
+
+
+
+
+@login_required
+def item_clear(request, id):
+    cart = Cart(request)
+    product = Menu.objects.get(id=id)
+    cart.remove(product)
+    if cart:
+        messages.success(request, "Produit supprimé avec succès")
+    else:
+        messages.error(request, "Le produit n'existe pas")
+    return redirect("cart_detail")
+
+
+
+
+@login_required
+def item_increment(request, id):
+    cart = Cart(request)
+    product = Menu.objects.get(id=id)
+    cart.add(product=product)
+    return redirect("cart_detail")
+
+
+@login_required
+def item_decrement(request, id):
+    cart = Cart(request)
+    # if cart == 1:
+    #     return messages.success(request, "La quantité minimum doit être 1")
+    
+    product = Menu.objects.get(id=id)
+    cart.decrement(product=product)
+    return redirect("cart_detail")
+
+
+@login_required
+def cart_clear(request):
+    cart = Cart(request)
+    cart.clear()
+    messages.success(request, "Panier supprimé avec succès")
+    return redirect("cart_detail")
+
+
+@login_required
+def cart_detail(request):
+    return render(request, 'cart.html')

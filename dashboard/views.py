@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from restaurant_app.models import *
 from django.contrib import messages
+from django.http import JsonResponse
 from django.core.paginator import Paginator
 from restaurant_app.forms import *
 from django.contrib.auth.decorators import login_required
@@ -350,4 +351,36 @@ def categorie_plat_view(request):
     categorieplats = Categorie.objects.all()
     context = {'categorieplats':categorieplats}
     template = 'dashboard/categorie-plat.html'
+    return render(request, template, context)
+
+
+
+def panier_add_view(request):
+    if request.method=="POST":
+        if request.user.is_authenticated:
+            men_id=int(request.POST.get('menus_id'))
+            menus_check = Menu.objects.get(id=men_id)
+            if(menus_check):
+                if(Panier.objects.filter(user=request.user.id, menu=men_id)):
+                    return JsonResponse({'status':"Le menus existe déjà au panier"})
+                else:
+                    user_instance = User.objects.get(email=request.user)
+                    # men_qtite=str(request.POST.get('menu_qtite')) 
+                    # if menus_check.quantite >= men_qtite:
+                    Panier.objects.create(user=user_instance, menu=menus_check) 
+                    return JsonResponse({'status':"Produit ajouté avec succès"})
+                    # else:
+                    #     JsonResponse({'status':"Seulement" + str(menus_check.quanite + "quanité non valable")})       
+            else:
+                return JsonResponse({'status':"Aucun menu trouvé"})
+        else:
+            return JsonResponse({'status':'connecter pour continuer'})
+            
+    return redirect('/')
+    
+   
+def panier_view(request):
+    cart =Panier.objects.filter(user=request.user)
+    context = {'cart':cart}
+    template ='cart.html'
     return render(request, template, context)
