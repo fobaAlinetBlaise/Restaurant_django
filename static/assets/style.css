@@ -26,6 +26,7 @@ Version: 2.0
     14. SINGLE BLOG PAGE
 ----------------------------------------------------------------------------------------*/
 
+
 /*--------------------
    1. BASE CSS
 ----------------------*/
@@ -95,6 +96,7 @@ body {
 a:hover {
     text-decoration: none;
 }
+
 
 /* Remove Chrome Input Field's Unwanted Yellow Background Color */
 
@@ -177,6 +179,7 @@ input:-webkit-autofill:focus {
     background: #f3f4f4;
 }
 
+
 /*--------------------------
     2. TOP AREA
 ---------------------------*/
@@ -240,6 +243,7 @@ input:-webkit-autofill:focus {
     background: #fff none repeat scroll 0 0;
     color: #ca3d26;
 }
+
 
 /*---------------------------------
     2.1 MAINMENU AREA
@@ -387,6 +391,7 @@ ul#nav li.active a {
     margin-top: -7px;
 }
 
+
 /*-----------------------------------
     2.2 SLIDER AREA
 -------------------------------------*/
@@ -484,7 +489,7 @@ a.home-reservation-button:hover {
 }
 
 .pogoSlider-slide::after {
-    background: #000 url("img/pattarn.png") repeat scroll 0 0;
+    /* background: #000 url("img/pattarn.png") repeat scroll 0 0; */
     content: "";
     height: 100%;
     left: 0;
@@ -494,6 +499,7 @@ a.home-reservation-button:hover {
     width: 100%;
     z-index: -1;
 }
+
 
 /*----------------------------
     2.3 SEARCH FORM AREA
@@ -655,6 +661,7 @@ a.search-form-trigger::before {
     visibility: visible;
 }
 
+
 /*----------------------------
     3. ABOUT AREA
 ------------------------------*/
@@ -745,6 +752,7 @@ a.read-more {
     border-color: #ca3d26;
 }
 
+
 /*-----------------------------
     4. PROMOTIONS AREA
 ------------------------------*/
@@ -757,7 +765,7 @@ a.read-more {
 .reservation-button-area-bg,
 .blog-area-bg,
 .footer-area-bg {
-    background: rgba(0, 0, 0, 0) url("img/promotions/promotions_area_bg_1.jpg") no-repeat scroll center center / cover;
+    /* background: rgba(0, 0, 0, 0) url("img/promotions/promotions_area_bg_1.jpg") no-repeat scroll center center / cover; */
     height: 100%;
     left: 0;
     position: absolute;
@@ -770,7 +778,7 @@ a.read-more {
 .blog-area-bg:after,
 .footer-area-bg::after,
 .page-barner-bg::after {
-    background: #000 url(img/pattarn.png);
+    /* background: #000 url(img/pattarn.png); */
     content: "";
     height: 100%;
     left: 0;
@@ -818,7 +826,7 @@ a.read-more {
     margin: auto;
 }
 
-.menu-discount-offer .owl-dots > div {
+.menu-discount-offer .owl-dots>div {
     background: #bcbfc1 none repeat scroll 0 0;
     border-radius: 50%;
     display: inline-block;
@@ -832,9 +840,10 @@ a.read-more {
     text-align: center;
 }
 
-.menu-discount-offer .owl-dots > div.active {
+.menu-discount-offer .owl-dots>div.active {
     background: #1a1a1a none repeat scroll 0 0;
 }
+
 
 /*-----------------------------
     5. MENUS AREA
@@ -929,6 +938,7 @@ a.read-more {
 .mix {
     display: none;
 }
+
 
 /*-------------------------------
     6. RESERVATION BUTTON AREA
@@ -1038,6 +1048,7 @@ option {
     border-radius: 0;
 }
 
+
 /*-----------------------------
     7. TEAM AREA
 -------------------------------*/
@@ -1123,24 +1134,25 @@ option {
     transform: scale(1);
 }
 
-.member-details > h3 {
+.member-details>h3 {
     font-size: 20px;
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
     letter-spacing: 1px;
 }
 
-.member-details > h3:hover {
+.member-details>h3:hover {
     color: #ca3d26;
 }
 
-.member-details > p {
+.member-details>p {
     margin-bottom: 0;
 }
 
 .team-area .owl-controls {
     display: none;
 }
+
 
 /*-----------------------------
     8. BLOG AREA
@@ -1151,7 +1163,7 @@ option {
 }
 
 .blog-area-bg {
-    background: rgba(0, 0, 0, 0) url("img/promotions/promotions_area_bg_3.jpg") no-repeat scroll center center / cover;
+    /* background: rgba(0, 0, 0, 0) url("img/promotions/promotions_area_bg_3.jpg") no-repeat scroll center center / cover; */
 }
 
 .post-details {
@@ -1171,7 +1183,7 @@ a.post-meta-button {
     text-transform: uppercase;
 }
 
-.post-details > h3 {
+.post-details>h3 {
     font-size: 26px;
     font-weight: 400;
     margin-bottom: 30px;
@@ -1179,7 +1191,7 @@ a.post-meta-button {
     position: relative;
 }
 
-.post-details > h3::after {
+.post-details>h3::after {
     background: #ca3d26 none repeat scroll 0 0;
     bottom: 0;
     content: "";
@@ -1215,8 +1227,8 @@ a.post-meta-button {
     width: 100%;
 }
 
-.blog-area .owl-nav > div,
-.menus-area .owl-nav > div {
+.blog-area .owl-nav>div,
+.menus-area .owl-nav>div {
     background: #ca3d26 none repeat scroll 0 0;
     color: #fff;
     display: inline-block;
@@ -1233,20 +1245,21 @@ a.post-meta-button {
     width: 40px;
 }
 
-.blog-area .owl-nav > div.owl-next,
-.menus-area .owl-nav > div.owl-next {
+.blog-area .owl-nav>div.owl-next,
+.menus-area .owl-nav>div.owl-next {
     right: 0;
 }
 
-.blog-area .owl-nav > div.owl-prev,
-.menus-area .owl-nav > div.owl-prev {
+.blog-area .owl-nav>div.owl-prev,
+.menus-area .owl-nav>div.owl-prev {
     left: 0;
 }
 
-.post-slider:hover .owl-nav > div,
-.food-menu-list:hover .owl-nav > div {
+.post-slider:hover .owl-nav>div,
+.food-menu-list:hover .owl-nav>div {
     opacity: 1;
 }
+
 
 /*------------------------------
     9. GALLERY AREA
@@ -1260,6 +1273,7 @@ a.post-meta-button {
     display: inline-block;
     width: 20%;
 }
+
 
 /*------------------------------
     10. FOOTER AREA
@@ -1346,6 +1360,7 @@ a.post-meta-button {
     margin-bottom: 0;
 }
 
+
 /*------------------------------
     11. SCROLL TO TOP
 -------------------------------*/
@@ -1370,6 +1385,7 @@ a.scrolltotop:hover {
     background: #1a1a1a;
     border: 1px solid;
 }
+
 
 /*===============================
     12. SINGLE PAGE
@@ -1444,6 +1460,7 @@ ul.page-location li.active a {
     color: #ca3d26;
 }
 
+
 /*===============================
     13. BLOG PAGE
 =================================*/
@@ -1508,7 +1525,7 @@ ul.page-location li.active a {
     margin-bottom: 0;
 }
 
-.blog-image-sldie .owl-nav > div {
+.blog-image-sldie .owl-nav>div {
     background: #fff none repeat scroll 0 0;
     color: #1a1a1a;
     display: inline-block;
@@ -1521,11 +1538,11 @@ ul.page-location li.active a {
     width: 40px;
 }
 
-.blog-image-sldie .owl-nav > div.owl-next {
+.blog-image-sldie .owl-nav>div.owl-next {
     right: -2px;
 }
 
-.blog-image-sldie .owl-nav > div.owl-prev {
+.blog-image-sldie .owl-nav>div.owl-prev {
     left: 0;
 }
 
@@ -1623,16 +1640,17 @@ ul.page-pagination li a {
     width: 70px;
 }
 
+
 /*------------------------------
     13.1 SIDEBAR AREA
 -------------------------------*/
 
-.single-sidebar-widget > form {
+.single-sidebar-widget>form {
     height: 45px;
     position: relative;
 }
 
-.single-sidebar-widget > form input {
+.single-sidebar-widget>form input {
     border: 2px solid;
     color: #1b1c1c;
     height: 100%;
@@ -1642,7 +1660,7 @@ ul.page-pagination li a {
     transition: 0.3s;
 }
 
-.single-sidebar-widget > form button {
+.single-sidebar-widget>form button {
     background: #1b1c1c none repeat scroll 0 0;
     border: 0 none;
     color: #fff;
@@ -1660,11 +1678,11 @@ ul.page-pagination li a {
     border-color: #ca3d26;
 }
 
-.single-sidebar-widget input:focus + button {
+.single-sidebar-widget input:focus+button {
     background: #ca3d26;
 }
 
-.single-sidebar-widget > form button:hover {
+.single-sidebar-widget>form button:hover {
     background: #1b1c1c none repeat scroll 0 0;
 }
 
@@ -1676,7 +1694,7 @@ ul.page-pagination li a {
     margin-bottom: 0;
 }
 
-.single-sidebar-widget > h4,
+.single-sidebar-widget>h4,
 .blog-comments h4,
 .comment-box h4 {
     color: #212222;
@@ -1688,7 +1706,7 @@ ul.page-pagination li a {
     text-transform: uppercase;
 }
 
-.single-sidebar-widget > h4::after,
+.single-sidebar-widget>h4::after,
 .blog-comments h4::after,
 .comment-box h4::after {
     background: #212222 none repeat scroll 0 0;
@@ -1845,6 +1863,7 @@ ul.blog-instagram-feed-widget li {
     opacity: 0.5;
 }
 
+
 /*==============================
     14. SINGLE BLOG PAGE
 ================================*/
@@ -1862,7 +1881,7 @@ ul.blog-instagram-feed-widget li {
     margin-bottom: 50px;
 }
 
-.single-comments:nth-child(2n + 1) {
+.single-comments:nth-child(2n+1) {
     margin-left: 80px;
 }
 
@@ -1926,6 +1945,7 @@ ul.blog-instagram-feed-widget li {
     border-bottom: 1px solid #d1d1d1;
 }
 
+
 /*-----------------------------
     CLASSIC STYLE
 ------------------------------*/
@@ -1942,6 +1962,7 @@ ul.blog-instagram-feed-widget li {
     display: none;
 }
 
+
 /*----------------------------------
     WELCOME TEXT AREA
 -----------------------------------*/
@@ -1957,7 +1978,7 @@ ul.blog-instagram-feed-widget li {
 }
 
 .top-area-bg::before {
-    background: #000000 url("img/pattarn.png") repeat scroll 0 0;
+    /* background: #000000 url("img/pattarn.png") repeat scroll 0 0; */
     content: "";
     height: 100%;
     left: 0;
@@ -2011,6 +2032,7 @@ ul.blog-instagram-feed-widget li {
     font-weight: 700;
 }
 
+
 /*---------------------------------
     COOKING EFFECT
 -----------------------------------*/
@@ -2038,12 +2060,17 @@ ul.blog-instagram-feed-widget li {
 .cooking-effect .top-area-bg::before {
     z-index: 1;
 }
+
+
 /*--------------------------------
     VIDEO BG
 ---------------------------------*/
+
 .top-area-bg.video-bg {
     background: transparent;
 }
+
+
 /*----------------------------------
     HOME ALT
 -----------------------------------*/
@@ -2052,15 +2079,18 @@ ul.blog-instagram-feed-widget li {
     overflow: hidden;
     position: relative;
 }
+
 .food-menu-img-two {
     overflow: hidden;
     position: relative;
 }
+
 .food-menu-details-two {
     border: 1px solid #dddddd;
     padding: 30px;
     text-align: center;
 }
+
 .food-menu-img-two .menu-price {
     -webkit-box-align: center;
     -ms-flex-align: center;
@@ -2101,6 +2131,7 @@ ul.blog-instagram-feed-widget li {
     width: 100%;
     z-index: 1;
 }
+
 .single-menu-two:hover .food-menu-img-two::after {
     opacity: 0.5;
     visibility: visible;
@@ -2110,6 +2141,7 @@ ul.blog-instagram-feed-widget li {
     border-radius: 50%;
     overflow: hidden;
 }
+
 .home-alt-two .member-social-bookmark {
     height: auto;
     left: 50%;
@@ -2120,10 +2152,12 @@ ul.blog-instagram-feed-widget li {
     transform: translateX(-50%) translateY(-50%);
     width: 100%;
 }
+
 .home-alt-two .member-social-bookmark li {
     display: inline-block;
     margin: 0 5px;
 }
+
 .home-alt-two .single-team-member:hover .member-social-bookmark {
     left: 0;
     opacity: 1;
@@ -2132,6 +2166,7 @@ ul.blog-instagram-feed-widget li {
 .home-alt .promotions-img {
     position: relative;
 }
+
 .home-alt .promotions-img::after {
     background: #000000 none repeat scroll 0 0;
     content: "";
@@ -2170,34 +2205,43 @@ ul.blog-instagram-feed-widget li {
 .home-alt .single-promotions:hover .promotions-img::after {
     opacity: 0.5;
 }
+
+
 /*==================================
         END OF MAIN STYLESHEET
 ====================================*/
 
+
 /* instafeeds */
+
 .instagram {
     display: grid;
     grid-gap: 10px;
     grid-template-columns: [col1-start] 33% [col2-start] 33% [col3-start] 33% [col3-end];
     grid-template-rows: [row1-start] auto [row2-start] auto [row2-end];
 }
+
 .instagram .box.a {
     grid-column: col1-start / col3-start;
     grid-row: row1-start;
 }
+
 .instagram .box.b {
     grid-column: col3-start;
     grid-row: row1-start / row2-end;
 }
+
 .instagram .box.c {
     grid-column: col1-start;
     grid-row: row2-start;
 }
+
 .instagram .box.d {
     grid-column: col2-start;
     grid-row: row2-start;
 }
-.instagram .box a > img {
+
+.instagram .box a>img {
     width: 100%;
     height: 100%;
     object-fit: cover;

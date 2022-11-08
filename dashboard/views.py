@@ -1,5 +1,3 @@
-import imp
-import profile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from restaurant_app.models import *
@@ -35,6 +33,26 @@ def contact_view(request):
     context = {'contacts':contacts}
     template = 'dashboard/contact.html'
     return render(request, template, context)
+
+
+
+@login_required
+def restaurateur_view(request):
+    authers = User.objects.filter (role="restaurateur")
+    context = {'authers':authers}
+    template = 'dashboard/restaurants.html'
+    return render(request, template, context)
+
+
+
+
+@login_required
+def client_view(request):
+    clients = User.objects.filter (role="client")
+    context = {'clients':clients}
+    template = 'dashboard/client.html'
+    return render(request, template, context)
+
 
 
 @login_required
@@ -384,3 +402,9 @@ def panier_view(request):
     context = {'cart':cart}
     template ='cart.html'
     return render(request, template, context)
+
+
+
+
+
+

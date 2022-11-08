@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Restaurant {% endblock %}
+{% block title %}Restaurants {% endblock %}
 {% block extra_css %} {% endblock %}
 {% block content %}
  <!--RESERVATION BUTTON AREA-->
- <section class="reservation-button-area section-padding" id="reservation-button"   style="margin-top:-660px">
+ <section class="reservation-button-area section-padding" id="reservation-button"  style="margin-top:-660px; height:70px">
     <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
     <div class="container">
         <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                 <div class="resarvation-from-button text-center wow fadeIn">
-                    <h2>Restaurant</h2>
+                    <h2>Restaurants</h2>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
                             <a href="{% url 'restaurant_detail' id=restaurant.id %}" >
                             <h3>{{restaurant.name}}</h3>
                             </a>
-                            <p class="menu-speacification">Email: <span> {{restaurant.user.email}} </span>
+                            <p class="menu-speacification">Email: <span> {{restaurant.email}} </span>
                                 Teléphone:
                                 {% if restaurant.phone %}
                                   <span>- {{restaurant.phone}}</span>
@@ -57,7 +57,7 @@
                                 <span class="text-danger">- Manquant</span>
                                 {% endif %}
                             </p>
-                            <p class="menu-speacification">Jour debut: <span>{{restaurant.user_profil.start_date}} </span> Jour Fin: <span>- {{restaurant.end_date}}</span></p>
+                            <p class="menu-speacification">Jour debut: <span>{{restaurant.start_date}} </span> Jour Fin: <span>- {{restaurant.end_date}}</span></p>
                             <p class="menu-speacification">Adresse: <span>{{restaurant.address}}</span></p>
                             {% comment %} <p class="menu-speacification"><span>{{restaurant.description}}</span> <span>- Chilli</span> <span>- Sesame</span></p> {% endcomment %}
                         </div>

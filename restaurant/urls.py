@@ -26,6 +26,7 @@ urlpatterns = [
     path('', include('restaurant_app.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('accounts/', include('allauth.urls')), # new
+    path('paypal/', include('paypal.standard.ipn.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = 'Administration Restaurant'

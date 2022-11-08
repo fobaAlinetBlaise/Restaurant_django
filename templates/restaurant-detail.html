@@ -44,13 +44,13 @@ utilisant lui aussi les trucs en bas dans la partie form {% endcomment %}
                                         <input type="hidden" value="{{men.id}}" class="menu_id">
                                         <div class="single-promotions">
                                             <div class="promotions-img">
-                                                <img src="{{menu.photo.url}}" style="width:400px; height:300px " alt="">
+                                                <img src="{{menu.image.url}}" style="width:400px; height:300px " alt="">
                                             </div>
                                             <div class="promotions-details">
                                                 <h3>{{menu.name}}</h3>
-                                                <h5 class="text-primary">Prix: {{menu.prix}} Fcfa</h5>
-                                                <button class="read-more addToCartBtn"  style="font-size: 10px;width: 100px;">Ajout Panier</button>
+                                                <h5 class="text-danger">Prix: {{menu.price}} Fcfa</h5>
                                             </div>
+                                            <div class=''><button class="read-more mt-2"   style="font-size: 10px;width: 100px;"><a href="{% url 'cart_add' menu.id %}">Ajouter</a></button></div>
                                         </div>
                                          </form>
                                 </div>
@@ -73,7 +73,7 @@ utilisant lui aussi les trucs en bas dans la partie form {% endcomment %}
                             <h3><a href="single-blog.html"> <strong>Restaurant:</strong>  {{restaurant.name}} </a></h3>
                             <p class="post-meta"><strong>Date d'Ouverture:</strong>  {{restaurant.start_date}}   </br> 
                                 <strong>Date de fermeture:</strong> {{restaurant.end_date}} </br>
-                                <strong>Email:</strong> {{restaurant.user.email}}</p>
+                                <strong>Email:</strong> {{restaurant.email}}</p>
                         </div>
                         <div class="blog-content">
                             <p>{{restaurant.description|safe}}</p>

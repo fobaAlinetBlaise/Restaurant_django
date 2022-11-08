@@ -1,13 +1,16 @@
-from multiprocessing import context
-from tkinter import Menubutton
 from django.http import JsonResponse
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404, reverse
+from django.core.paginator import Paginator
 from .forms import *
 from .models import *
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
+from paypal.standard.forms import PayPalPaymentsForm
+from django.conf import settings
+from decimal import Decimal
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def home_view(request):
@@ -143,6 +146,9 @@ def team_view(request):
 
 def menu_view(request):
     menus = Menu.objects.filter(status=True)
+    paginator = Paginator(menus, 4)
+    page = request.GET.get('page')
+    menus = paginator.get_page(page)
     q = request.GET.get('q')
     if q:
         menus = Menu.objects.filter(
@@ -185,12 +191,17 @@ def panier_add_view(request):
             return JsonResponse({'status':'connecter pour continuer'})
             
     return redirect('/')
-    
-   
+      
 def panier_view(request):
     cart =Panier.objects.filter(user=request.user.id)
     context = {'cart':cart}
     template ='cart.html'
+    return render(request, template, context)
+
+      
+def checkoute(request):
+    context = {}
+    template ='checkout.html'
     return render(request, template, context)
 
 
@@ -204,11 +215,7 @@ def panier_view(request):
 def cart_add(request, id):
     cart = Cart(request)
     product = Menu.objects.get(id=id)
-    check = cart.add(product=product)
-    # if check:
-    #     messages.success(request, "Ajouter avec succe")
-    # else:
-    #     messages.error(request, "Le produit existe déjà au panier")
+    cart.add(product=product)
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -219,11 +226,8 @@ def item_clear(request, id):
     cart = Cart(request)
     product = Menu.objects.get(id=id)
     cart.remove(product)
-    if cart:
-        messages.success(request, "Produit supprimé avec succès")
-    else:
-        messages.error(request, "Le produit n'existe pas")
     return redirect("cart_detail")
+    
 
 
 
@@ -251,10 +255,88 @@ def item_decrement(request, id):
 def cart_clear(request):
     cart = Cart(request)
     cart.clear()
-    messages.success(request, "Panier supprimé avec succès")
     return redirect("cart_detail")
 
 
 @login_required
 def cart_detail(request):
     return render(request, 'cart.html')
+
+
+
+
+
+
+def process_payment(request):
+    # order_id = request.session.get('order_id')
+    # order = get_object_or_404(Commande, id=order_id)
+    
+    
+    # client = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, unique=True)
+    # menu = models.ForeignKey(Menu, on_delete=models.CASCADE, blank=False, null=False)
+    # quantite = models.IntegerField(default=1, blank=False, null=False)
+    # Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+    # updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
+    # status    = models.BooleanField(default=True)
+    # ref = models.CharField(max_length=200, blank=True, null=True, unique=True)
+    # payement = models.CharField(max_length=200, default='Cash', choices = PAYEMENT)
+    order = {'business': 'business'}
+    # order = Commande.objects.create(
+    #     client = ,
+    #     menu = ,
+    #     quantite = ,
+    #     ref = ,
+    #     payement = 
+    # )
+    host = request.get_host()
+
+    paypal_dict = {
+        'business': settings.PAYPAL_RECEIVER_EMAIL,
+        'amount': 100,
+        'item_name': 'Order',
+        'invoice': str(2),
+        'currency_code': 'USD',
+        'notify_url': 'http://{}{}'.format(host,
+                                           reverse('paypal-ipn')),
+        'return_url': 'http://{}{}'.format(host,
+                                           reverse('payment_done')),
+        'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('payment_cancelled')),
+    }
+
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    return render(request, 'process_payment.html', {'order': order, 'form': form})
+
+
+
+
+@csrf_exempt
+def payment_done(request):
+    return render(request, 'payment_done.html')
+
+
+@csrf_exempt
+def payment_canceled(request):
+    return render(request, 'payment_cancelled.html')
+
+
+
+
+def checkout(request):
+    if request.method == 'POST':
+        max ={}
+        print("==========================")
+        obj = request.POST.get("obj")
+        # items = list(obj.items())
+        for dict in obj:
+            # for key in dict.items:
+            print(obj['dict'])
+        return redirect(request.META['HTTP_REFERER'])
+        #     # cart.clear(request)
+
+        #     # request.session['order_id'] = o.id
+        #     return redirect('process_payment')
+
+
+    else:
+        return redirect(request.META['HTTP_REFERER'])

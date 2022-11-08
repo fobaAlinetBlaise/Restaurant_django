@@ -84,16 +84,15 @@ class CommandeForm(forms.ModelForm):
         model= Commande
         fields= [
             'client',
-            'menu',
-            'quantite',
             'ref',
+            'price',
             'payement'
         ]
         
         Widgets= {
             'client': forms.TextInput(attrs={'class': 'form-control'}),
-            'menu': forms.TextInput(attrs={'class': 'form-control'}),
             'ref': forms.TextInput(attrs={'class': 'form-control'}),
+            'price':forms.NumberInput(attrs={'class':'form-control'}),
             'payement': forms.TextInput(attrs={'class': 'forml'}),
         }
 
@@ -148,3 +147,5 @@ class BlogCategorieForm(forms.ModelForm):
         Widgets= {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+        
+        

@@ -7,6 +7,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from django.forms import FloatField
 from django.utils.text import slugify
 import os
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
@@ -39,7 +40,7 @@ class UserManager(BaseUserManager):
     use_in_migrations = True
     def save_user(self, email, password, **extra_fields):
         if not email:
-            raise ValueError(_('The given email must be set'))
+            raise ValueError(('The given email must be set'))
         email = self.normalize_email(email)
         user  = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -75,11 +76,27 @@ ROLE = (
     ("restaurateur", ("restaurateur")),
 )
 
+JOUR = (
+    ('Lundi','Lundi'),
+    ('Mardi','Mardi'),
+    ('Mercredi','Mercredi'),
+    ('Jeudi','Jeudi'),
+    ('Vendredi','Vendredi'),
+    ('Samedi','Samedi'),
+    ('Dimanche','Dimanche'),
+)
+
 class User(AbstractBaseUser, PermissionsMixin):
-    name       = models.CharField(max_length=250, blank=True, null=True)
-    first_name = models.CharField(max_length=250, blank=True, null=True)
-    last_name = models.CharField(max_length=250, blank=True, null=True)
+    name       = models.CharField(max_length=250, blank=True, null=True, unique=True)
+    first_name = models.CharField(max_length=250, blank=True, null=True, unique=True)
+    last_name = models.CharField(max_length=250, blank=True, null=True, unique=True)
     email     = models.EmailField(max_length=200, unique=True, validators = [validators.EmailValidator()])
+    photo     = models.ImageField(upload_to='images', blank=True, null=True)
+    address   = models.CharField(max_length=200, blank=True, null=True)
+    description= models.TextField(max_length=200, blank=True, null=True)
+    phone     = models.CharField(max_length=20, blank=True, null=True, unique=True)
+    start_date= models.CharField(max_length=200, default='', choices = JOUR,  blank=True, null=True)
+    end_date  = models.CharField(max_length=200, default='', choices = JOUR,  blank=True, null=True)
     is_staff  = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     i_agree   = models.BooleanField(blank=True, null=True, default=False)
@@ -112,7 +129,7 @@ class Profil(models.Model):
     photo     = models.ImageField(upload_to='images', blank=True, null=True)
     address   = models.CharField(max_length=200, blank=True, null=True)
     description= models.TextField(max_length=200, blank=True, null=True)
-    phone     = models.CharField(max_length=20, blank=True, null=True)
+    phone     = models.CharField(max_length=20, blank=True, null=True, unique=True)
     start_date= models.CharField(max_length=200, default='', choices = JOUR,  blank=True, null=True)
     end_date  = models.CharField(max_length=200, default='', choices = JOUR,  blank=True, null=True)
     
@@ -129,8 +146,8 @@ def create_user_profil(sender, instance, created, **kwargs):
 
 
 class Categorie(models.Model):
-    name = models.CharField(max_length=200, blank=False, null=False)
-    restaurant = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
+    name = models.CharField(max_length=200, blank=False, null=False, unique=True)
+    restaurant = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
     status    = models.BooleanField(default=True)
@@ -164,7 +181,7 @@ pre_save.connect(presave_categorie, sender=Categorie)
 
 
 class Menu(models.Model):
-    name = models.CharField(max_length = 200,null=False, blank = False)
+    name = models.CharField(max_length = 200,null=False, blank = False, unique=True)
     price = models.FloatField(default=0, null=False, blank = False)
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, blank=False, null=False)
     restaurant = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
@@ -199,15 +216,16 @@ pre_save.connect(presave_menu, sender=Menu)
  
 PAYEMENT = (
     ('Cash','Cash'),
+    ('Paypal','Paypal'),
 )
 class Commande(models.Model):
-    client = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, blank=False, null=False)
-    quantite = models.IntegerField(default=1, blank=False, null=False)
+    client = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, unique=True)
+    menu = models.ManyToManyField(Menu, blank=True, related_name='user_com')
+    price = models.FloatField(blank=True, null=True)
     Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
     status    = models.BooleanField(default=True)
-    ref = models.CharField(max_length=200, blank=True, null=True)
+    ref = models.CharField(max_length=200, blank=True, null=True, unique=True)
     payement = models.CharField(max_length=200, default='Cash', choices = PAYEMENT)
 
     def __str__(self):
@@ -221,7 +239,7 @@ class BlogCategorie(models.Model):
     Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
     status    = models.BooleanField(default=True)
-    name = models.CharField(max_length=200, blank=False, null=False)
+    name = models.CharField(max_length=200, blank=False, null=False, unique=True)
     slug = models.SlugField(max_length=200, blank=True, null=True, editable=False, unique=False)
 
     def __str__(self):
@@ -253,7 +271,7 @@ class Blog(models.Model):
     status    = models.BooleanField(default=True)
     description = models.TextField(blank=False, null=False)
     photo     = models.ImageField(upload_to='blog', blank=True, null=True)
-    name = models.CharField(max_length=200, blank=False, null=False)
+    name = models.CharField(max_length=200, blank=False, null=False, unique=True)
     slug = models.SlugField(max_length=200, blank=True, null=True, editable=False, unique=False)
 
     def __str__(self):
@@ -279,8 +297,8 @@ pre_save.connect(presave_blog, sender=Blog)
 
 
 class Commentaire(models.Model):
-    name = models.CharField(max_length=200, blank=False, null=False)
-    email = models.EmailField(max_length=250, blank=False, null=False)
+    name = models.CharField(max_length=200, blank=False, null=False, unique=True)
+    email = models.EmailField(max_length=250, blank=False, null=False, unique=True)
     message = models.TextField(blank=False, null=False)
     # related_name permet d utiliser ce champ dans Blog
     blog = models.ForeignKey(Blog, blank=False, null=False, on_delete=models.CASCADE, related_name='comment_blog')
@@ -293,7 +311,7 @@ class Commentaire(models.Model):
     
 
 class Team(models.Model):
-    user = models.ForeignKey(Profil, blank=False, null=False, on_delete=models.CASCADE, related_name='user_team')
+    user = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE, related_name='user_team')
     position = models.CharField(max_length=200, blank=True, null=False)
     description = models.TextField(blank=False, null=False)
     Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
@@ -307,14 +325,14 @@ class Team(models.Model):
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=200, blank=False, null=False)
-    email = models.EmailField(max_length=250, blank=False, null=False)
+    name = models.CharField(max_length=200, blank=False, null=False, unique=True)
+    email = models.EmailField(max_length=250, blank=False, null=False, unique=True)
     sujet = models.CharField(max_length=200, blank=False, null=True)
     message = models.TextField(blank=False, null=False)
     Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
     status    = models.BooleanField(default=True)
-    phone     = models.CharField(max_length=200, blank=False, null=False)
+    phone     = models.CharField(max_length=200, blank=False, null=False, unique=True)
 
     def __str__(self):
         return self.name

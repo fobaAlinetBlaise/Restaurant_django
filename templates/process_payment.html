@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Menus {% endblock %}
+{% block extra_css %} {% endblock %}
+{% block content %}
+<!--RESERVATION BUTTON AREA-->
+    <section class="reservation-button-area section-padding" id="reservation-button" style="margin-top:-660px">
+    <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="resarvation-from-button text-center wow fadeIn">
+                    <h2>Pay with PayPal</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="team-area section-padding" id="team" >
+    <div class="container wow fadeIn">
+         <div class="row">
+            <h4>Pay with PayPal</h4>
+            {{ form.render }}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
