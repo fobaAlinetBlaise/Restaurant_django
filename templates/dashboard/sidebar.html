@@ -54,8 +54,8 @@
                 </li>
                 {% elif request.user.role == "restaurateur" %}
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="{% url 'dashboard:menu' %}">
-                            <i class="ri-honour-line"></i> <span data-key="t-widgets">Menu</span>
+                        <a class="nav-link menu-link" href="{% url 'dashboard:plats' %}">
+                            <i class="ri-honour-line"></i> <span data-key="t-widgets">Plats</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -64,13 +64,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="{% url 'dashboard:home' %}">
+                        <a class="nav-link menu-link" href="{% url 'dashboard:restaurant_home' %}">
                             <i class="ri-honour-line"></i> <span data-key="t-widgets">Commande</span>
                         </a>
                     </li>
                 {% elif request.user.role == "client" %}
                     <li class="nav-item">
-                        <a class="nav-link menu-link" href="{% url 'dashboard:home' %}">
+                        <a class="nav-link menu-link" href="{% url 'dashboard:client_home' %}">
                             <i class="ri-honour-line"></i> <span data-key="t-widgets">Commande</span>
                         </a>
                     </li>

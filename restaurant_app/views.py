@@ -1,3 +1,4 @@
+from atexit import register
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404, reverse
 from django.core.paginator import Paginator
@@ -84,7 +85,7 @@ def about_view(request):
 
 
 def restaurant_view(request):
-    restaurants = User.objects.filter(role="restaurateur")
+    restaurants = User.objects.filter(role="restaurateur", is_active="True")
     q = request.GET.get('q')
     if q:
         restaurants = User.objects.filter(
@@ -162,49 +163,115 @@ def menu_view(request):
 
 
 
-def panier_view(request):
-    context={}
-    template='panier.html'
-    return render(request, template, context)
+# def panier_view(request):
+#     context={}
+#     template='panier.html'
+#     return render(request, template, context)
 
 
 
-def panier_add_view(request):
-    if request.method=="POST":
-        if request.user.is_authenticated:
-            men_id=int(request.POST.get('menus_id'))
-            menus_check = Menu.objects.get(id=men_id)
-            if(menus_check):
-                if(Panier.objects.filter(user=request.user.id, menu=men_id)):
-                    return JsonResponse({'status':"Le menus existe déjà au panier"})
-                else:
-                    user_instance = User.objects.get(email=request.user)
-                    # men_qtite=str(request.POST.get('menu_qtite')) 
-                    # if menus_check.quantite >= men_qtite:
-                    Panier.objects.create(user=user_instance, menu=menus_check) 
-                    return JsonResponse({'status':"Produit ajouté avec succès"})
-                    # else:
-                    #     JsonResponse({'status':"Seulement" + str(menus_check.quanite + "quanité non valable")})       
-            else:
-                return JsonResponse({'status':"Aucun menu trouvé"})
-        else:
-            return JsonResponse({'status':'connecter pour continuer'})
+# def panier_add_view(request):
+#     if request.method=="POST":
+#         if request.user.is_authenticated:
+#             men_id=int(request.POST.get('menus_id'))
+#             menus_check = Menu.objects.get(id=men_id)
+#             if(menus_check):
+#                 if(Panier.objects.filter(user=request.user.id, menu=men_id)):
+#                     return JsonResponse({'status':"Le menus existe déjà au panier"})
+#                 else:
+#                     user_instance = User.objects.get(email=request.user)
+#                     # men_qtite=str(request.POST.get('menu_qtite')) 
+#                     # if menus_check.quantite >= men_qtite:
+#                     Panier.objects.create(user=user_instance, menu=menus_check) 
+#                     return JsonResponse({'status':"Produit ajouté avec succès"})
+#                     # else:
+#                     #     JsonResponse({'status':"Seulement" + str(menus_check.quanite + "quanité non valable")})       
+#             else:
+#                 return JsonResponse({'status':"Aucun menu trouvé"})
+#         else:
+#             return JsonResponse({'status':'connecter pour continuer'})
             
-    return redirect('/')
+#     return redirect('/')
       
-def panier_view(request):
-    cart =Panier.objects.filter(user=request.user.id)
-    context = {'cart':cart}
-    template ='cart.html'
-    return render(request, template, context)
+# def panier_view(request):
+#     cart =Panier.objects.filter(user=request.user.id)
+#     context = {'cart':cart}
+#     template ='cart.html'
+#     return render(request, template, context)
 
       
-def checkoute(request):
-    context = {}
-    template ='checkout.html'
-    return render(request, template, context)
+# def checkoute(request):
+#     context = {}
+#     template ='checkout.html'
+#     return render(request, template, context)
 
 
+
+
+
+
+
+
+# @login_required
+# def cart_add(request, id):
+#     cart = Cart(request)
+#     product = Menu.objects.get(id=id)
+#     cart.add(product=product)
+#     return redirect(request.META['HTTP_REFERER'])
+
+
+
+
+# @login_required
+# def item_clear(request, id):
+#     cart = Cart(request)
+#     product = Menu.objects.get(id=id)
+#     cart.remove(product)
+#     return redirect("cart_detail")
+    
+
+
+
+
+# @login_required
+# def item_increment(request, id):
+#     cart = Cart(request)
+#     product = Menu.objects.get(id=id)
+#     cart.add(product=product)
+#     return redirect("cart_detail")
+
+
+# @login_required
+# def item_decrement(request, id):
+#     cart = Cart(request)
+#     # if cart == 1:
+#     #     return messages.success(request, "La quantité minimum doit être 1")
+    
+#     product = Menu.objects.get(id=id)
+#     cart.decrement(product=product)
+#     return redirect("cart_detail")
+
+
+
+
+
+
+
+# @login_required
+# def cart_clear(request):
+#     cart = Cart(request)
+#     cart.clear()
+#     return redirect("cart_detail")
+
+
+
+
+
+
+
+# @login_required
+# def cart_detail(request):
+#     return render(request, 'cart.html')
 
 
 
@@ -212,131 +279,187 @@ def checkoute(request):
 
 
 @login_required
-def cart_add(request, id):
-    cart = Cart(request)
-    product = Menu.objects.get(id=id)
-    cart.add(product=product)
+def cart_detail_view(request):
+    user_panier = User.objects.get(email=request.user.email)
+    product_list = Panier.objects.filter(user=user_panier)
+# fonction pour la somme totale des produits au panier
+    total_produit = 0
+    for product in product_list:
+        produit_price = product.menu.price
+        produit_quantite  = product.quantite
+        total_produit += float(produit_price*produit_quantite)
+        
+    context={
+        'details':product_list,
+        'total_produit':total_produit,    
+    }
+    template ='cart.html'
+    return render(request, template, context)
+
+
+
+
+
+
+@login_required
+def cart_commander_view(request):
+    user_panier = User.objects.get(email=request.user.email)
+    product_list = Panier.objects.filter(user=user_panier)
+    
+    for product in product_list:
+        Commande.objects.create(
+            client=user_panier,
+            ref = random_string(8),
+            quantite = product.quantite,
+            restaurant = product.menu.restaurant,
+            payement='Cash',
+            menu=product.menu
+        )
+ # vider le panier si la commande s'est passée avec succès
+    Panier.objects.filter(user=user_panier).delete()
+    messages.success(request, "Commander avec sucèss")
+    return redirect('menu')
+
+
+
+
+@login_required
+def cart_ajouter_view(request, id=id):
+    menu_id = get_object_or_404(Menu, id=id)
+    if Panier.objects.filter(menu=menu_id).exists():
+        messages.error(request, "Produit exist deja")
+        return redirect(request.META['HTTP_REFERER'])
+    else:
+        user_panier = User.objects.get(email=request.user.email)
+        Panier.objects.create(menu=menu_id, user=user_panier)
+        messages.success(request, "Produit ajouté avec sucess")
+        return redirect(request.META['HTTP_REFERER'])
+    # return redirect(request.META['HTTP_REFERER'])
+
+
+
+
+
+@login_required
+def cart_delete_produit_view(request, id=id):
+    order = get_object_or_404(Panier, id=id)
+    order.delete()
+    messages.success(request, "Produit suprimé avec sucess")
+    return redirect(request.META['HTTP_REFERER'])
+
+
+
+
+
+@login_required
+def cart_delete_panier_view(request):
+    user_panier = User.objects.get(email=request.user.email)
+    Panier.objects.filter(user=user_panier).delete()
+    messages.success(request, "Panier suprimé avec sucèss")
     return redirect(request.META['HTTP_REFERER'])
 
 
 
 
 @login_required
-def item_clear(request, id):
-    cart = Cart(request)
-    product = Menu.objects.get(id=id)
-    cart.remove(product)
-    return redirect("cart_detail")
-    
+def cart_increment_view(request, id):
+    produit = get_object_or_404(Panier, id=id)
+    produit.quantite += 1 
+    produit.save()
+    return redirect(request.META['HTTP_REFERER'])
+
 
 
 
 
 @login_required
-def item_increment(request, id):
-    cart = Cart(request)
-    product = Menu.objects.get(id=id)
-    cart.add(product=product)
-    return redirect("cart_detail")
-
-
-@login_required
-def item_decrement(request, id):
-    cart = Cart(request)
-    # if cart == 1:
-    #     return messages.success(request, "La quantité minimum doit être 1")
-    
-    product = Menu.objects.get(id=id)
-    cart.decrement(product=product)
-    return redirect("cart_detail")
-
-
-@login_required
-def cart_clear(request):
-    cart = Cart(request)
-    cart.clear()
-    return redirect("cart_detail")
-
-
-@login_required
-def cart_detail(request):
-    return render(request, 'cart.html')
-
-
-
-
-
-
-def process_payment(request):
-    # order_id = request.session.get('order_id')
-    # order = get_object_or_404(Commande, id=order_id)
-    
-    
-    # client = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, unique=True)
-    # menu = models.ForeignKey(Menu, on_delete=models.CASCADE, blank=False, null=False)
-    # quantite = models.IntegerField(default=1, blank=False, null=False)
-    # Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
-    # updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
-    # status    = models.BooleanField(default=True)
-    # ref = models.CharField(max_length=200, blank=True, null=True, unique=True)
-    # payement = models.CharField(max_length=200, default='Cash', choices = PAYEMENT)
-    order = {'business': 'business'}
-    # order = Commande.objects.create(
-    #     client = ,
-    #     menu = ,
-    #     quantite = ,
-    #     ref = ,
-    #     payement = 
-    # )
-    host = request.get_host()
-
-    paypal_dict = {
-        'business': settings.PAYPAL_RECEIVER_EMAIL,
-        'amount': 100,
-        'item_name': 'Order',
-        'invoice': str(2),
-        'currency_code': 'USD',
-        'notify_url': 'http://{}{}'.format(host,
-                                           reverse('paypal-ipn')),
-        'return_url': 'http://{}{}'.format(host,
-                                           reverse('payment_done')),
-        'cancel_return': 'http://{}{}'.format(host,
-                                              reverse('payment_cancelled')),
-    }
-
-    form = PayPalPaymentsForm(initial=paypal_dict)
-    return render(request, 'process_payment.html', {'order': order, 'form': form})
-
-
-
-
-@csrf_exempt
-def payment_done(request):
-    return render(request, 'payment_done.html')
-
-
-@csrf_exempt
-def payment_canceled(request):
-    return render(request, 'payment_cancelled.html')
-
-
-
-
-def checkout(request):
-    if request.method == 'POST':
-        max ={}
-        print("==========================")
-        obj = request.POST.get("obj")
-        # items = list(obj.items())
-        for dict in obj:
-            # for key in dict.items:
-            print(obj['dict'])
+def cart_decrement_view(request, id):
+    produit = get_object_or_404(Panier, id=id)
+    if produit.quantite <= 1:
+        messages.error(request, "Produit ne peut pas etre en dessous de 1")
         return redirect(request.META['HTTP_REFERER'])
-        #     # cart.clear(request)
+    produit.quantite -= 1 
+    produit.save()
+    return redirect(request.META['HTTP_REFERER'])
 
-        #     # request.session['order_id'] = o.id
-        #     return redirect('process_payment')
 
 
+
+# def process_payment(request):
+#     # order_id = request.session.get('order_id')
+#     # order = get_object_or_404(Commande, id=order_id)
+    
+    
+#     # client = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, unique=True)
+#     # menu = models.ForeignKey(Menu, on_delete=models.CASCADE, blank=False, null=False)
+#     # quantite = models.IntegerField(default=1, blank=False, null=False)
+#     # Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+#     # updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
+#     # status    = models.BooleanField(default=True)
+#     # ref = models.CharField(max_length=200, blank=True, null=True, unique=True)
+#     # payement = models.CharField(max_length=200, default='Cash', choices = PAYEMENT)
+#     order = {'business': 'business'}
+#     # order = Commande.objects.create(
+#     #     client = ,
+#     #     menu = ,
+#     #     quantite = ,
+#     #     ref = ,
+#     #     payement = 
+#     # )
+#     host = request.get_host()
+
+#     paypal_dict = {
+#         'business': settings.PAYPAL_RECEIVER_EMAIL,
+#         'amount': 100,
+#         'item_name': 'Order',
+#         'invoice': str(2),
+#         'currency_code': 'USD',
+#         'notify_url': 'http://{}{}'.format(host,
+#                                            reverse('paypal-ipn')),
+#         'return_url': 'http://{}{}'.format(host,
+#                                            reverse('payment_done')),
+#         'cancel_return': 'http://{}{}'.format(host,
+#                                               reverse('payment_cancelled')),
+#     }
+
+#     form = PayPalPaymentsForm(initial=paypal_dict)
+#     return render(request, 'process_payment.html', {'order': order, 'form': form})
+
+
+
+
+# @csrf_exempt
+# def payment_done(request):
+#     return render(request, 'payment_done.html')
+
+
+# @csrf_exempt
+# def payment_canceled(request):
+#     return render(request, 'payment_cancelled.html')
+
+
+
+
+# def checkout(request):
+#     if request.method == 'POST':
+#         max ={}
+#         print("==========================")
+#         obj = request.POST.get("obj")
+#         # items = list(obj.items())
+#         for dict in obj:
+#             # for key in dict.items:
+#             print(obj['dict'])
+#         return redirect(request.META['HTTP_REFERER'])
+
+#     else:
+#         return redirect(request.META['HTTP_REFERER'])
+
+
+# fonction permettant d'afficher la quantité du produit au panier
+def my_panier_list(request):
+    if request.user.is_authenticated:
+        user_panier = User.objects.get(email=request.user.email)
+        MY_PANIER_LIST = Panier.objects.filter(user=user_panier).count()
+        return {'MY_PANIER_LIST': MY_PANIER_LIST}
     else:
-        return redirect(request.META['HTTP_REFERER'])
+        return {'MY_PANIER_LIST':0}

@@ -1,9 +1,5 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block title %}Menus {% endblock %}
-{% block extra_css %} {% endblock %}
-{% block content %}
-<section class="reservation-button-area section-padding" id="reservation-button"    style="margin-top:-660px; height:70px">
+{% extends 'base.html' %} {% load static %} {% block title %}Menus {% endblock %} {% block extra_css %} {% endblock %} {% block content %}
+<section class="reservation-button-area section-padding" id="reservation-button" style="margin-top:-660px; height:70px">
     <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
     <div class="container">
         <div class="row">
@@ -43,33 +39,35 @@
                                         <h5>{{men.restaurant.name}}</h5>
                                         <h5>{{men.name}}</h5>
                                         <h5 class="text-danger">Prix: {{men.price}} Fcfa</h5>
-                                        <button class="read-more"  style="font-size: 12px;width: 100px;"><a href="{% url 'cart_add' men.id %}">Ajouter</a></button>
+                                        <form action="{% url 'cart_ajouter' men.id %}">
+                                            <button class="read-more" style="font-size: 12px;width: 100px;"><a href="{% url 'cart_ajouter' men.id %}">Ajouter</a></button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                             {% endfor %}
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
         <div class="row mt-3">
             <div class="col-md-3 offset-md-4">
                 <ul class="pagination">
                     {% if menus.has_previous %}
-                       <li class="page-item">
+                    <li class="page-item">
                         <a class="page-link" href="?page={{ menus.previous_page_number }}">Précédant</a>
-                       </li>
-                     {% endif %}
-                     
-                     <li class="page-item active">
-                         <a class="page-link" href="?page={{ menus.number }}">{{menus.number}}</a>
-                     </li>
-                     {% if menus.has_next %}
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ menus.number }}">{{menus.number}}</a>
+                    </li>
+                    {% if menus.has_next %}
                     <li class="page-item">
                         <a class="page-link" href="?page={{ menus.next_page_number }}">Suivant</a>
                     </li>
-                     {% endif %}
+                    {% endif %}
                 </ul>
             </div>
         </div>

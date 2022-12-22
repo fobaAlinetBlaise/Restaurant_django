@@ -16,6 +16,8 @@ from re import T
 from telnetlib import AUTHENTICATION
 from tokenize import Triple
 
+from requests import session
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -50,7 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'restaurant_app',
     'dashboard',
-    'cart',
     'crispy_forms',
     'paypal.standard.ipn',
     'allauth', # new
@@ -83,7 +84,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'cart.context_processor.cart_total_amount',
+                # pour permettre au nombre panier d afficher dans toutes les pages
+                'restaurant_app.views.my_panier_list'
             ],
         },
     },
@@ -178,6 +180,25 @@ PAYPAL_RECEIVER_EMAIL = 'alinetblaisefoba@gmail.com'
 
 PAYPAL_TEST = True
 
+# pour la session si on n'est pas connecté se deconnecte
+MIDDLEWARE_CLASSES = [
+    # ...
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
+    # ...
+]
+
+
+# le temps donc la session s'expirera
+SESSION_EXPIRE_SECONDS = 120 # 1 hour
+
+
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+
+# SESSION_EXPIRE_AFTER_LAST_ACTIVITY_GRACE_PERIOD = 60 # group by minute
+
+
+SESSION_TIMEOUT_REDIRECT = '/'
 
 
 # Default primary key field type

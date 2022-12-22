@@ -8,14 +8,14 @@
             </div>
             <div class="modal-body">
                 <h5 class="fs-15">
-                    {{ blogcategorie.name }}
+                    {{categorie.name}}
                 </h5>
                 <p class="text-muted">Voullez-vous réellement supprimer la categorie ce blog? Ce processus ne pourra pas être refais</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
                 <button type="button" class="btn btn-danger">
-                    <a href="" class="text-white">Supprimer</a>
+                    <a href="{% url 'dashboard:blog_categorie_delete' categorie.slug %}" class="text-white">Supprimer</a>
                 </button>
             </div>
 

@@ -36,11 +36,6 @@
                         <div class="card-body">
                             <div id="customerList">
                                 <div class="row g-4 mb-3">
-                                    <div class="col-sm-auto">
-                                        <div>
-                                            <button type="button" class="btn btn-success add-btn" ><i class="ri-add-line align-bottom me-1"></i><a href="{% url 'dashboard:blog_categorie_add' %}"  class="text-white"> Ajouter</a></button>
-                                        </div>
-                                    </div>
                                     <div class="col-sm">
                                         <div class="d-flex justify-content-sm-end">
                                             <div class="search-box ms-2">
@@ -53,7 +48,7 @@
 
                                 <div class="table-responsive table-card mt-3 mb-1">
                                     <table class="table align-middle table-nowrap" id="customerTable">
-                                        {% include 'dashboard/modals/blog-categorie-delete.html' with blogcategorie=blogcategorie %}
+                                        {% include 'dashboard/modals/restaurant-delete.html' with restaurant=restaurant %}
                                         <thead class="table-light">
                                             <tr>
                                                 <th scope="col" style="width: 50px;">
@@ -81,18 +76,17 @@
                                                 {% endif %}
                                                 <td class="customer_name">{{auther.first_name}}  {{auther.last_name}}</td>
                                                 <td class="status"><span class="badge badge-soft-success text-uppercase">{{auther.is_active}} </span></td>
-                                                <td>
-                                                    {% comment %} <div class="d-flex gap-2">
+                                                <td><div class="d-flex gap-2">
                                                         <div class="edit">
-                                                            <a class="btn btn-sm btn-success edit-item-btn" href="{% url 'dashboard:blog_categorie_modif' slug=blogcategorie.slug %} ">Modifier</a>
+                                                            <a class="btn btn-sm btn-success edit-item-btn" href="{% url 'dashboard:restaurant_modif' id=auther.id %} ">Modifier</a>
                                                         </div>
                                                         <div class="remove">
-                                                            <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#blogcategorie-delete">Supprimer</button>
+                                                            <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#restaurant-delete">Supprimer</button>
                                                         </div>
                                                         <div class="remove">
-                                                            <a href="{% url 'dashboard:blog_categorie_detail' slug=blogcategorie.slug %}" class="btn btn-sm btn-success remove-item-btn"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> Details</a>
+                                                            <a href="{% url 'dashboard:restaurant_detail' id=auther.id %}" class="btn btn-sm btn-success remove-item-btn"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> Details</a>
                                                         </div>
-                                                    </div> {% endcomment %}
+                                                    </div>
                                                 </td>
                                             </tr>
                                             {% endfor %}

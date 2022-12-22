@@ -11,6 +11,46 @@ from allauth.account.forms import SignupForm
 User = get_user_model()
 
 
+class CommandeForm(forms.ModelForm):
+    class Meta:
+        model= Commande
+        fields= [
+            'status',
+        ]
+
+
+class PlatForm(forms.ModelForm):
+    class Meta:
+        model= Menu
+        fields= [
+            'name',
+            'price',
+            'quantite',
+            'image',
+            'categorie',
+            'restaurant',
+            'description',
+            'status',
+        ]
+        
+        Widgets= {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.TextInput(attrs={'class': 'form-control'}),
+            'quantite': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.TextInput(attrs={'class': 'form-control', 'row':1, 'cols':30}),
+        }
+        
+
+class PlatCategorieForm(forms.ModelForm):
+    class Meta:
+        model= Categorie
+        fields= [
+            'name',
+            'restaurant',
+            'status',
+        ]
+
+
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -79,28 +119,6 @@ class ContactForm(forms.ModelForm):
 
 
 
-class CommandeForm(forms.ModelForm):
-    class Meta:
-        model= Commande
-        fields= [
-            'client',
-            'ref',
-            'price',
-            'payement'
-        ]
-        
-        Widgets= {
-            'client': forms.TextInput(attrs={'class': 'form-control'}),
-            'ref': forms.TextInput(attrs={'class': 'form-control'}),
-            'price':forms.NumberInput(attrs={'class':'form-control'}),
-            'payement': forms.TextInput(attrs={'class': 'forml'}),
-        }
-
-
-
-
-
-
 class TeamForm(forms.ModelForm):
     class Meta:
         model= Team
@@ -112,12 +130,13 @@ class TeamForm(forms.ModelForm):
         
         Widgets= {
             'position': forms.TextInput(attrs={'class': 'form-control'}),
+            'user': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'row':1, 'cols':30}),
         }
 
 
 
-# pas besoin du champ blog aui est cle etrangere 
+# pas besoin du champ blog qui est cle etrangere 
 # on gere depuis view afin de ne pas avoir une liste à selectionner
 class BlogForm(forms.ModelForm):
     class Meta:
@@ -149,3 +168,10 @@ class BlogCategorieForm(forms.ModelForm):
         }
         
         
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model= User
+        fields= [
+            'is_active',
+        ]

@@ -203,32 +203,15 @@
                                     <div class="row">
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <div>
-                                            {{ form.client|as_crispy_field}}
+                                            {{ form.is_active|as_crispy_field}}
                                         </div>
                                     </div>
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <div>
-                                            {{form.menu|as_crispy_field}}
+                                            {{ form.|as_crispy_field}}
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-xxl-3 col-md-6 mb-3">
-                                        <div>
-                                            {{form.quantite|as_crispy_field}}
-                                        </div>
-                                    </div>
-                                    <div class="col-xxl-3 col-md-6 mb-3">
-                                        <div>
-                                            {{form.ref|as_crispy_field}}
-                                        </div>
-                                    </div>
-                                </div>
-                                    <div class="col-xxl-3 col-md-12 mb-3">
-                                        <div>
-                                            {{form.payement|as_crispy_field}}
-                                        </div>
-                                    </div>
                                     <input type="submit" class="btn btn-primary" value="Modifier">
                                 </form>
                             </div>

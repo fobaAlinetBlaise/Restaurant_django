@@ -1,0 +1,228 @@
+{% extends 'dashboard/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Blog {% endblock %}
+{% block extra_css %} 
+<style>
+    .error{
+        color:red;
+    }
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: .5rem .9rem;
+        font-size: .8125rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--vz-body-color);
+        background-color: var(--vz-input-bg);
+        background-clip: padding-box;
+        border: 1px solid var(--vz-input-border);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: .25rem;
+        -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    }
+    input[type="text" i] {
+        -webkit-text-security: disc !important;
+        padding: 1px 2px;
+        width: 100%;
+        display: block;
+        width: 100%;
+        padding: .5rem .9rem;
+        font-size: .8125rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--vz-body-color);
+        background-color: var(--vz-input-bg);
+        background-clip: padding-box;
+        border: 1px solid var(--vz-input-border);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: .25rem;
+        -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+    }
+    textarea {
+        resize: vertical;
+        width:100%;
+    }
+    textarea.form-control {
+        min-height: calc(1.5em + 1rem + 2px);
+    }
+    textarea {
+        writing-mode: horizontal-tb !important;
+        font-style: ;
+        font-variant-ligatures: ;
+        font-variant-caps: ;
+        font-variant-numeric: ;
+        font-variant-east-asian: ;
+        font-weight: ;
+        font-stretch: ;
+        font-size: ;
+        font-family: monospace;
+        text-rendering: auto;
+        color: fieldtext;
+        letter-spacing: normal;
+        word-spacing: normal;
+        line-height: normal;
+        text-transform: none;
+        text-indent: 0px;
+        text-shadow: none;
+        display: inline-block;
+        text-align: start;
+        appearance: auto;
+        -webkit-rtl-ordering: logical;
+        resize: auto;
+        cursor: text;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        background-color: field;
+        column-count: initial !important;
+        margin: 0em;
+        border-width: 1px;
+        border-style: solid;
+        border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+        border-image: initial;
+        padding: 2px;
+    }
+    button, input, optgroup, select, textarea {
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+    .form-select {
+        display: block;
+        width: 100%;
+        padding: .5rem 2.7rem .5rem .9rem;
+        -moz-padding-start: calc(.9rem - 3px);
+        font-size: .8125rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: var(--vz-body-color);
+        background-color: var(--vz-input-bg);
+        background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e);
+        background-repeat: no-repeat;
+        background-position: right .9rem center;
+        background-size: 16px 12px;
+        border: 1px solid var(--vz-input-border);
+        border-radius: .25rem;
+        -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+    select {
+        word-wrap: normal;
+    }
+    button, select {
+        text-transform: none;
+    }
+    select {
+        writing-mode: horizontal-tb !important;
+        font-style: ;
+        font-variant-ligatures: ;
+        font-variant-caps: ;
+        font-variant-numeric: ;
+        font-variant-east-asian: ;
+        font-weight: ;
+        font-stretch: ;
+        font-size: ;
+        font-family: ;
+        text-rendering: auto;
+        color: fieldtext;
+        letter-spacing: normal;
+        word-spacing: normal;
+        line-height: normal;
+        text-transform: none;
+        text-indent: 0px;
+        text-shadow: none;
+        display: inline-block;
+        text-align: start;
+        appearance: auto;
+        box-sizing: border-box;
+        align-items: center;
+        white-space: pre;
+        -webkit-rtl-ordering: logical;
+        background-color: field;
+        cursor: default;
+        margin: 0em;
+        border-width: 1px;
+        border-style: solid;
+        border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+        border-image: initial;
+        border-radius: 0px;
+    }
+    select:not(:-internal-list-box) {
+        overflow: visible !important;
+    }
+
+</style>
+{% endblock %}
+{% block content  %}
+
+<div class="page-content">
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0">Blog</h4>
+
+                    <div class="page-title-right">
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Panneau</a></li>
+                            <li class="breadcrumb-item active">Blog</li>
+                        </ol>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="live-preview">
+                            <div class="row">
+                                <form method="POST" enctype="multipart/form-data"> {% csrf_token %} 
+                                    <div class="row">
+                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                        <div>
+                                            {{ form.status|as_crispy_field}}
+                                        </div>
+                                    </div>
+                                </div>
+                                    <input type="submit" class="btn btn-primary" value="Modifier">
+                                </form>
+                            </div>
+                            <!--end row-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end col-->
+        </div>
+        <!--end row-->
+
+    </div> <!-- container-fluid -->
+</div><!-- End Page-content -->
+
+
+{% endblock %} 
+
+{% block extra_javascript %} {% endblock %}

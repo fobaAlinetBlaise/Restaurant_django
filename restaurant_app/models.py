@@ -214,17 +214,65 @@ pre_save.connect(presave_menu, sender=Menu)
  
  
  
+ 
+ 
+ 
+ 
+ 
+
+# class Menu(models.Model):
+#     name = models.CharField(max_length = 200,null=False, blank = False, unique=True)
+#     price = models.FloatField(default=0, null=False, blank = False)
+#     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, blank=False, null=False)
+#     restaurant = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
+#     image = models.ImageField(upload_to='images', blank=False, null=False)
+#     quantite = models.IntegerField(blank=True, default=1, null=True)
+#     description = models.TextField(blank=False, null=False)
+#     Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
+#     updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
+#     status    = models.BooleanField(default=True)
+#     slug = models.SlugField(max_length=200, blank=True, null=True, editable=False, unique=False)
+
+#     def __str__(self):
+#         return self.name
+
+# def create_menu_slug(instance, new_slug=None):
+#     slug=slugify(instance.name)
+#     if new_slug is not None:
+#         slug = new_slug
+#     ourQuery = Menu.objects.filter(slug= slug)
+#     exists = ourQuery.exists()
+#     if exists:
+#         new_slug = "%s-%s" % (slug, ourQuery.first().id)
+#         return create_menu_slug(instance, new_slug=new_slug)
+#     return slug
+# def presave_menu(sender, instance, *args, **kwargs):
+#     if not instance.slug:
+#         instance.slug = create_menu_slug(instance)
+# pre_save.connect(presave_menu, sender=Menu)
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+ 
 PAYEMENT = (
     ('Cash','Cash'),
     ('Paypal','Paypal'),
 )
 class Commande(models.Model):
-    client = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, unique=True)
-    menu = models.ManyToManyField(Menu, blank=True, related_name='user_com')
-    price = models.FloatField(blank=True, null=True)
+    client = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False, related_name='commande_user')
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE, blank=False, null=True, related_name='user_com')
+    quantite = models.IntegerField(blank=True, null=True, default=1)
+    restaurant = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=True, related_name='commande_rstaurant')
     Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
     updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
-    status    = models.BooleanField(default=True)
+    status    = models.BooleanField(default=False)
     ref = models.CharField(max_length=200, blank=True, null=True, unique=True)
     payement = models.CharField(max_length=200, default='Cash', choices = PAYEMENT)
 
@@ -232,6 +280,11 @@ class Commande(models.Model):
         return self.menu.name
 
 
+# partie permettant de calculer le prix total d'un produit
+    def multiply(self):
+        produit = self.menu.price
+        quantity  = self.quantite
+        return float(produit*quantity)
 
 
 
@@ -341,8 +394,15 @@ class Contact(models.Model):
 class Panier(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
-    quantite = models.IntegerField(blank=False, null=False, default=1)
+    quantite = models.IntegerField(blank=True, null=True, default=1)
     date_ajout = models.DateTimeField(auto_now=False, auto_now_add=True)
+    
+    def multiply(self):
+        produit = self.menu.price
+        quantity  = self.quantite
+        return float(produit*quantity)
+    
+    
     
 
 

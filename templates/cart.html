@@ -1,10 +1,4 @@
-{% extends 'base.html' %} 
-{% load static %} {% block title %}Panier {% endblock %} 
-{% block extra_css %} {% endblock %} 
-{% load cart_tag %}
-
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %}Panier {% endblock %} {% block extra_css %} {% endblock %} {% block content %}
 <!--RESERVATION BUTTON AREA-->
 <section class="reservation-button-area section-padding" id="reservation-button" style="margin-top:-660px">
     <div class="reservation-button-area-bg" data-stellar-background-ratio="0.6"></div>
@@ -20,108 +14,97 @@
 </section>
 
 
-<section class="team-area section-padding" id="team" >
-    {% if request.session.cart %}
+<section class="team-area section-padding" id="team">
+    {% if details %}
     <div class="container wow fadeIn">
         <div class="row">
-           <div class="text-center">{% include 'message.html' %}</div>
-           <table class="table align-middle table-nowrap mb-0" id="customerTable">
-               <thead class="table-light">
-                   <div class="d-flex align-items-center">
-                       <button class="input-goup-text">
-                           <a href="{% url 'cart_clear' %}">Supprimer Panier</a>    
+            <div class="text-center">{% include 'message.html' %}</div>
+            <table class="table align-middle table-nowrap mb-0" id="customerTable">
+                <thead class="table-light">
+                    <div class="d-flex align-items-center">
+                        <button class="input-goup-text">
+                           <a href="{% url 'cart_delete_panier' %}">Supprimer Panier</a>    
                        </button>
-                   </div>
-                   <tr>
-                       <th class="sort" data-sort="name" scope="col">Photo</th>
-                       <th class="sort" data-sort="email_id" scope="col">Nom Produit</th>
-                       <th class="sort" data-sort="name" scope="col">Prix</th>
-                       <th class="sort" data-sort="phone" scope="col">Quantité</th>
-                       <th class="sort" data-sort="phone" scope="col">Total</th>
-                       <th class="sort" data-sort="phone" scope="col">Action</th>
-                   </tr>
-               </thead>
-               <tbody class="list form-check-all">
-                   {% for key,value in request.session.cart.items %}
-                   <tr>
-                       <td class="name">
-                           {% if value.image %}
-                               <div class="d-flex align-items-center">
-                                   <div class="flex-grow-1 ms-2 name"><img src="{{value.image}}" style="width:50px;height:50px" /></div>
-                               </div>
-                           {% else %}
-                               <div class="d-flex align-items-center">
-                                   <div class="flex-grow-1 ms-2 name">
-                                       <img src="images/2_Yc07bjO.jpg" />
-                                   </div>
-                               </div>
-                           {% endif %}
-                       </td>
-                       <td class="name">
-                           <div class="d-flex align-items-center">
-                               <div class="flex-grow-1 ms-2 name">{{value.name|title}}</div>
-                           </div>
-                       </td>
-                       <td class="name">
-                           <div class="d-flex align-items-center">
-                               <div class="flex-grow-1 ms-2 name">{{value.price}}<b>Fcfa</b></div>
-                           </div>
-                       </td>
-                       <td class="name">
-                           <div class="d-flex align-items-center">
-                               <button class="input-goup-text">
-                                   <a href="{% url 'item_decrement' value.product_id %}">-</a>    
-                               </button>
-                               {{value.quantity}}
-                               <button class="input-goup-text">
-                                   <a href="{% url 'item_increment' value.product_id %}">+</a>
-                               </button>
-                           </div>
-                       </td>
-                       <td class="name">
-                           <div class="d-flex align-items-center">
-                               <div class="flex-grow-1 ms-2 name">{{ value.price|multiply:value.quantity }}</div>
-                           </div>
-                       </td>
-                       <td class="name">
-                           <div class="d-flex align-items-center">
-                               <button class="input-goup-text">
-                                 <a href="{% url 'item_clear' value.product_id %}">Supprimer</a>    
-                               </button> 
-                           </div>
-                       </td>
-                   </tr>
-                   {% endfor %}
-               </tbody>
-           </table>
-       </div>
-       <div class="d-flex align-items-center">
-        <form action="{% url 'process_payment' %}", method="POST">{% csrf_token %}
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <input type="hidden" name="obj" value="{{request.session.cart.items}}" />
                     </div>
-                </div>
-            </div>
-    
-            <button type="submit">Envoyer</button>
-        </form>
-           {% comment %} <a href="{% url 'process_payment' %}">Pay now</a> {% endcomment %}
-           <h3>Total:</h3><h5>{% for key,value in request.session.cart.items %}{{ value.get_deal_total }}{% endfor %} </h5>
-       </div>
-   </div>
+                    <tr>
+                        <td>Supprimer Panier {{ total_produit }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Total</td>
+                    </tr>
+                    <tr>
+                        <th class="sort" data-sort="name" scope="col">Photo</th>
+                        <th class="sort" data-sort="email_id" scope="col">Nom Produit</th>
+                        <th class="sort" data-sort="name" scope="col">Prix</th>
+                        <th class="sort" data-sort="phone" scope="col">Quantité</th>
+                        <th class="sort" data-sort="phone" scope="col">Total</th>
+                        <th class="sort" data-sort="phone" scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="list form-check-all">
+                    {% for detail in details %}
+                    <tr>
+                        <td class="name">
+                            {% if detail.menu.image %}
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 ms-2 name"><img src="{{ detail.menu.image.url }}" style="width:50px;height:50px" /></div>
+                            </div>
+                            {% else %}
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 ms-2 name">
+                                    <img src="images/2_Yc07bjO.jpg" />
+                                </div>
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="name">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 ms-2 name">{{detail.menu.name|title}}</div>
+                            </div>
+                        </td>
+                        <td class="name">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 ms-2 name">{{detail.menu.price}}<b>Fcfa</b></div>
+                            </div>
+                        </td>
+                        <td class="name">
+                            <div class="d-flex align-items-center">
+                                <button class="input-goup-text">
+                                   <a href="{% url 'cart_decrement' detail.id %}">-</a>    
+                               </button> {{detail.quantite }}
+                                <button class="input-goup-text">
+                                   <a href="{% url 'cart_increment' detail.id %}">+</a>
+                               </button>
+                            </div>
+                        </td>
+                        <td class="name">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 ms-2 name">{{detail.multiply }}</div>
+                            </div>
+                        </td>
+                        <td class="name">
+                            <div class="d-flex align-items-center">
+                                <button class="input-goup-text">
+                                 <a href="{% url 'cart_delete_produit' detail.id %}">Supprimer</a>    
+                               </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex align-items-center">
+
+            <a href="{% url 'cart_commander' %}">Commander</a>
+        </div>
+    </div>
     {% else %}
     <div class="d-flex align-items-center">
         <h3 class="text-center text-danger">Your cart is empty</h3>
     </div>
     {% endif %}
 </section>
-{% endblock %} 
-
-
-
-
-
-{% block extra_javascript %} 
-{% endblock %}
+{% endblock %} {% block extra_javascript %} {% endblock %}

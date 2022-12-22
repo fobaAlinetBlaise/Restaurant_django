@@ -15,7 +15,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fermer</button>
                 <button type="button" class="btn btn-danger">
-                    <a href="{% url 'dashboard:blog_delete' slug=blog.slug %}" class="text-white">Supprimer</a>
+                    <a href="{% url 'dashboard:blog_delete' blog.id %}" class="text-white">Supprimer</a>
                 </button>
             </div>
 
