@@ -18,7 +18,7 @@ def home_view(request):
     restaurants = User.objects.filter(role="restaurateur")[:10]
     team = Team.objects.all()
     blogs = Blog.objects.filter(status=True)
-    menus = Menu.objects.filter(status=True)[:10]
+    menus = Menu.objects.filter(status=True)
     context = {'restaurants':restaurants,
                'team':team,
                'blogs':blogs,
@@ -101,7 +101,7 @@ def restaurant_view(request):
 def restaurant_detail(request, id=None):
     restaurant=get_object_or_404(User, id=id, role='restaurateur')
     menus = Menu.objects.filter(status=True, restaurant=id)
-    categories=Categorie.objects.filter(status=True)
+    categories=Categorie.objects.filter(restaurant=id, status=True)
     categorie = request.GET.get('categorie')
     if categorie:
         menus = Menu.objects.filter(restaurant=id, categorie__slug=categorie, status=True)

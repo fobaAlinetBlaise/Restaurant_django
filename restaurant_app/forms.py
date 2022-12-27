@@ -35,6 +35,7 @@ class PlatForm(forms.ModelForm):
         
         Widgets= {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'restaurant': forms.TextInput(attrs={'class': 'form-control'}),
             'price': forms.TextInput(attrs={'class': 'form-control'}),
             'quantite': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'row':1, 'cols':30}),

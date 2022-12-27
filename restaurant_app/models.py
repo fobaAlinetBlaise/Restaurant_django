@@ -182,7 +182,7 @@ pre_save.connect(presave_categorie, sender=Categorie)
 
 class Menu(models.Model):
     name = models.CharField(max_length = 200,null=False, blank = False, unique=True)
-    price = models.FloatField(default=0, null=False, blank = False)
+    price = models.IntegerField(default=0, null=False, blank = False)
     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, blank=False, null=False)
     restaurant = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
     image = models.ImageField(upload_to='images', blank=False, null=False)

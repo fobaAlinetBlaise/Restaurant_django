@@ -128,22 +128,21 @@
                             <img class="rounded-circle header-profile-user" src="{% static 'dashboard/assets/images/users/avatar-1.jpg' %}"
                                 alt="Header Avatar">
                                 {% endif %}
-                            <span class="text-start ms-xl-2">
-                                {% if user.first_name and user.last_name %}
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ user.first_name }} {{ user.last_name }} </span>
-                                {% else %}
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text text-danger">{{ user.name }} </span>
-                                {% endif %}
-                            </span>
+                                <div class="book-table-popup">
+                                    {% if request.user.is_authenticated %}
+                                        {% if request.user.is_superuser %}
+                                        <a href="{% url 'dashboard:home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.first_name }}  {{ user.last_name }}</a>
+                                        {% elif request.user.role == "restaurateur" %}
+                                        <a href="{% url 'dashboard:restaurant_home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.name }}</a>
+                                        {% elif request.user.role == "client" %}
+                                            <a href="{% url 'dashboard:client_home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.first_name }}   {{ user.last_name }}</a>
+                                        {% endif %}
+                                        {% endif %}
+                                </div>
                         </span>
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
-                        {% if user.first_name and user.last_name %}
-                        <h6 class="dropdown-header">Welcome {{ user.first_name }} {{ user.last_name }}!</h6>
-                        {% else %}
-                        <h6 class="dropdown-header">Welcome {{ user.name }}!</h6>
-                        {% endif %}
                         <a class="dropdown-item" href="{% url 'dashboard:profil' %} "><i
                                 class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                                 class="align-middle">Profile</span></a>
@@ -152,7 +151,7 @@
                                 class="align-middle">Mot de passe</span></a>
                         <a class="dropdown-item text-danger" href="{% url 'account_logout' %} "><i
                                 class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
-                                class="align-middle" data-key="t-logout">Logout</span></a>
+                                class="align-middle" data-key="t-logout">Déconnexion</span></a>
                     </div>
                 </div>
             </div>

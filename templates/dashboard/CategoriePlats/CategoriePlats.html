@@ -81,7 +81,7 @@
                                                             <a class="btn btn-sm btn-success edit-item-btn" href="">Modifier</a>
                                                         </div>
                                                         <div class="remove">
-                                                            <button class="btn btn-sm btn-danger remove-item-btn" data-bs-toggle="modal" data-bs-target="#blogcategorie-delete">Supprimer</button>
+                                                            <a class="btn btn-sm btn-danger remove-item-btn" href="{% url 'dashboard:categorieplatplat_delete' slug=categorieplat.slug %}">Supprimer</a>
                                                         </div>
                                                         <div class="remove">
                                                             <a href="" class="btn btn-sm btn-success remove-item-btn"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> Details</a>

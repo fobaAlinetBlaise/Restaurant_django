@@ -1,29 +1,4 @@
 {% extends 'base.html' %} {% load static %} {% block title %}Acceuil {% endblock %} {% block extra_css %} {% endblock %} {% block content %}
-
-<!--HHOME SLIDER AREA-->
-<div class="slider-area" style="margin-top:-660px">
-    <div class="pogoSlider">
-        <div class="pogoSlider-slide" data-transition="fade" data-duration="1500" style="background:url({% static 'assets/img/slider/slide_11.JPG' %}) no-repeat scroll 0 0 / cover;">
-            <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Bienvenue au</h2>
-            <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500"><span>Plateforme de gestion de restaurants</span></h1>
-            <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'restaurant'%} " data-toggle="modal">Voir Maintenant</a></h3>
-        </div>
-        <div class="pogoSlider-slide" data-transition="fade" style="background:url({% static 'assets/img/slider/slide_11.jpg' %}) no-repeat scroll 0 0 / cover;">
-            <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Nos menus</h2>
-            <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500">Voir ce qu’il y a dans nos restaurants</h1>
-            <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'menu'%}">Menus du jour</a></h3>
-        </div>
-    </div>
-</div>
-<!--HOME SLIDER AREA END-->
-
-<!--ABOUT AREA-->
-<!--ABOUT AREA END-->
-
-
-
-
-
 <section class="blog-page blog-area section-padding">
     <div class="container">
         <div class="row" >
@@ -42,7 +17,7 @@
                                         <img src="{{men.image.url}}" style="width:400px; height:300px " alt="">
                                     </div>
                                     <div class="promotions-details">
-                                        <h5>{{men.restaurant.name}}</h5>
+                                        <h4>{{men.restaurant.name}}</h4>
                                         <h5>{{men.name}}</h5>
                                         <h5 class="text-danger">Prix: {{men.price}} Fcfa</h5>
                                         <button class="read-more"   style="font-size: 10px;width: 100px;"><a href="{% url 'cart_ajouter' men.id %}">Ajouter</a></button>
@@ -65,7 +40,25 @@
 
 
 <!--MENUS AREA-->
-<div class="reservation-button-area-bg " data-stellar-background-ratio="0.6 "></div>
+<div class="reservation-button-area-bg " data-stellar-background-ratio="0.6 ">
+        <!--HHOME SLIDER AREA-->
+        <div class="slider-area">
+            <div class="pogoSlider">
+                <div class="pogoSlider-slide" data-transition="fade" data-duration="1500" style="background:url(static/assets/img/slider/slide_11.JPG) no-repeat scroll 0 0 / cover;">
+                    <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Bienvenue</h2>
+                    <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500">Plateforme de gestion de restaurants</h1>
+                    <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'restaurant'%} " data-toggle="modal">Voir Maintenant</a></h3>
+                </div>
+                <div class="pogoSlider-slide" data-transition="fade" style="background:url(static/assets/img/slider/m1.jpg) no-repeat scroll 0 0 / cover;">
+                    <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Nos menus</h2>
+                    <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500">Voir ce qu’il y a dans nos restaurants</h1>
+                    <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'menu'%}">Menus du jour</a></h3>
+                </div>
+            </div>
+        </div>
+        <!--HOME SLIDER AREA END-->
+    
+</div>
 <div class="container ">
     <div class="row ">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 ">
@@ -101,7 +94,7 @@
                             <span class="text-danger ">- Pas de Numéro</span> {% endif %}
                         </p>
                         <p class="menu-speacification ">Jour debut: <span>{{restaurant.start_date}} </span> <br />Jour Fin: <span>- {{restaurant.end_date}}</span></p>
-                        <p class="menu-speacification ">Adresse: <span>{{restaurant.address}}</span></p>
+                        <p class="menu-speacification ">Adresse: <span>{{restaurant.address|truncatechars:10}}</span></p>
                     </div>
                 </div>
             </div>

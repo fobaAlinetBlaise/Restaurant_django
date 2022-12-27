@@ -27,13 +27,6 @@
                        </button>
                     </div>
                     <tr>
-                        <td>Supprimer Panier {{ total_produit }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Total</td>
-                    </tr>
-                    <tr>
                         <th class="sort" data-sort="name" scope="col">Photo</th>
                         <th class="sort" data-sort="email_id" scope="col">Nom Produit</th>
                         <th class="sort" data-sort="name" scope="col">Prix</th>
@@ -80,7 +73,7 @@
                         </td>
                         <td class="name">
                             <div class="d-flex align-items-center">
-                                <div class="flex-grow-1 ms-2 name">{{detail.multiply }}</div>
+                                <div class="flex-grow-1 ms-2 name">{{detail.multiply }}  Fcfa</div>
                             </div>
                         </td>
                         <td class="name">
@@ -96,14 +89,17 @@
             </table>
         </div>
 
+        <td>Total: <strong>{{ total_produit }}  Fcfa</strong></td>
+        <hr />
         <div class="d-flex align-items-center">
 
-            <a href="{% url 'cart_commander' %}">Commander</a>
+            <td class="text-danger"><button><a href="{% url 'cart_commander' %}">Commander</a></button></td>
+            
         </div>
     </div>
     {% else %}
     <div class="d-flex align-items-center">
-        <h3 class="text-center text-danger">Your cart is empty</h3>
+        <h3 class="text-center text-danger">Votre Panier est Vide</h3>
     </div>
     {% endif %}
 </section>

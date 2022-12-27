@@ -49,16 +49,18 @@
                             <a href="{% url 'restaurant_detail' id=restaurant.id %}" >
                             <h3>{{restaurant.name}}</h3>
                             </a>
-                            <p class="menu-speacification">Email: <span> {{restaurant.email}} </span>
+                            <p class="menu-speacification">Email: <span><strong> {{restaurant.email}} </strong></span></p>
+                        <p>
                                 Teléphone:
                                 {% if restaurant.phone %}
-                                  <span>- {{restaurant.phone}}</span>
+                                  <span><strong>- {{restaurant.phone}}</strong></span>
                                 {% else %}
                                 <span class="text-danger">- Manquant</span>
                                 {% endif %}
                             </p>
-                            <p class="menu-speacification">Jour debut: <span>{{restaurant.start_date}} </span> Jour Fin: <span>- {{restaurant.end_date}}</span></p>
-                            <p class="menu-speacification">Adresse: <span>{{restaurant.address}}</span></p>
+                            <p class="menu-speacification">Jour debut: <span><strong>{{restaurant.start_date}} </strong></span></p>
+                            <p class="menu-speacification">Jour Fin: <span><strong>{{restaurant.end_date}} </strong></span></p>
+                            <p class="menu-speacification">Adresse: <br /> <span><strong>{{restaurant.address}}</strong></span></p>
                             {% comment %} <p class="menu-speacification"><span>{{restaurant.description}}</span> <span>- Chilli</span> <span>- Sesame</span></p> {% endcomment %}
                         </div>
                     </div>

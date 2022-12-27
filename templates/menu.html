@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                 <div class="resarvation-from-button text-center wow fadeIn">
-                    <h2>Restaurant</h2>
+                    <h2>Menus</h2>
                 </div>
             </div>
         </div>
@@ -37,6 +37,7 @@
                                     </div>
                                     <div class="promotions-details">
                                         <h5>{{men.restaurant.name}}</h5>
+                                        <h5>{{men.categorie.name}}</h5>
                                         <h5>{{men.name}}</h5>
                                         <h5 class="text-danger">Prix: {{men.price}} Fcfa</h5>
                                         <form action="{% url 'cart_ajouter' men.id %}">

@@ -63,7 +63,8 @@ def commande_modif_view(request, id=None):
 
 @login_required
 def plat_view(request):
-    plats = Menu.objects.all()
+    user = User.objects.get(email=request.user.email)
+    plats = Menu.objects.filter(restaurant=user)
     context = {'plats':plats}
     template = 'dashboard/plats/plats.html'
     return render(request, template, context)
@@ -129,7 +130,8 @@ def plat_detail_view(request, slug=None):
 
 @login_required
 def categorie_plat_view(request):
-    categorieplats = Categorie.objects.all()
+    user = User.objects.get(email=request.user.email)
+    categorieplats = Categorie.objects.filter(restaurant=user)
     context = {'categorieplats':categorieplats}
     template = 'dashboard/CategoriePlats/CategoriePlats.html'
     return render(request, template, context)
@@ -148,6 +150,14 @@ def categorieplat_add_view(request):
     context = {'form':form}
     template='dashboard/CategoriePlats/CategoriePlats_add.html'
     return render(request, template, context)
+
+@login_required
+def categorieplat_delete_view(request, slug=None):
+    categorieplat = get_object_or_404( Categorie, slug=slug)
+    categorieplat.delete()
+    messages.success(request, "ce catégorie de plat a été supprimé avec succés")
+    return redirect('dashboard:categorie_plat')
+
 
 
 

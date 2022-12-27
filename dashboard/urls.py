@@ -17,6 +17,7 @@ urlpatterns = [
     path('plat/detail/<slug:slug>/', plat_detail_view, name= 'plat_detail'),
     path('categorieplat/', categorie_plat_view, name= 'categorie_plat'),
     path('categorieplat/add/', categorieplat_add_view, name= 'categoriePlat_add'),
+    path('categorieplat/delete/<slug:slug>/', categorieplat_delete_view, name='categorieplatplat_delete'),
     
     
     
