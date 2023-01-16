@@ -48,7 +48,7 @@ def commande_modif_view(request, id=None):
         form = CommandeForm(request.POST, instance=commande)
         if form.is_valid():
             form.save()
-            messages.success(request, "Votre commande a été modifié avec succés")
+            messages.success(request, "Votre commande a été modifiée avec succès")
             return redirect('dashboard:restaurant_home')
     else:
         form = CommandeForm(instance=commande)
@@ -70,40 +70,50 @@ def plat_view(request):
     return render(request, template, context)
 
 
-
-@login_required
-def plat_add_view(request):
-    categorie = Categorie.objects.all()
-    restaurant = User.objects.filter(role="restaurateur")
+def plat_add_view(request, id=None):
+    restaurant = User.objects.get(email=request.user.email)
+    categories = Categorie.objects.filter(restaurant=restaurant)
     if request.method =='POST':
-        form = PlatForm(request.POST, request.FILES)
+        form = PlatForm(request.POST, request.FILES )
         if form.is_valid():
+            categorie = Categorie.objects.get(pk=request.POST['category'])
             obj= form.save(commit=False)
-            obj.categorie.id = categorie
-            obj.restaurant.id = restaurant
+            obj.restaurant = restaurant
+            obj.categorie = categorie
             form.save()
-            messages.success(request, "Votre plat a été ajouté avec succés")
+            messages.success(request, "Votre plat a été ajouté avec succès")
+            # pour dire rediriger sur la page courant
             return redirect('dashboard:plats')
     else:
         form = PlatForm()
-    context = {'form':form}
+    context = { 
+        'form':form,
+        'categories':categories
+    }
     template='dashboard/plats/plat-add.html'
-    return render(request, template, context)
+    return render(request, template,context)
+
 
 
 
 @login_required
 def plat_modif_view(request, slug=None):
     plat = get_object_or_404(Menu, slug=slug)
+    cat_id= plat.categorie.id
+    restaurant = User.objects.get(email=request.user.email)
+    categories = Categorie.objects.filter(restaurant=restaurant)
     if request.method =='POST':
         form = PlatForm(request.POST, request.FILES, instance=plat)
         if form.is_valid():
+            categorie = Categorie.objects.get(pk=request.POST['category'])
+            obj= form.save(commit=False)
+            obj.categorie = categorie
             form.save()
-            messages.success(request, "Votre plat a été modifié avec succés")
+            messages.success(request, "Votre plat a été modifié avec succès")
             return redirect('dashboard:plats')
     else:
         form = PlatForm(instance=plat)
-    context = {'form':form}
+    context = {'form':form, 'categories':categories, 'cat_id':cat_id}
     template = 'dashboard/plats/plat-modif.html'
     return render(request, template, context)
 
@@ -112,7 +122,7 @@ def plat_modif_view(request, slug=None):
 def plat_delete_view(request, slug=None):
     plat = get_object_or_404(Menu, slug=slug)
     plat.delete()
-    messages.success(request, "ce restaurant a été supprimé avec succés")
+    messages.success(request, "ce plat a été supprimé avec succès")
     return redirect('dashboard:plats')
 
 @login_required
@@ -130,8 +140,8 @@ def plat_detail_view(request, slug=None):
 
 @login_required
 def categorie_plat_view(request):
-    user = User.objects.get(email=request.user.email)
-    categorieplats = Categorie.objects.filter(restaurant=user)
+    restaurant = User.objects.get(email=request.user.email)
+    categorieplats = Categorie.objects.filter(restaurant=restaurant)
     context = {'categorieplats':categorieplats}
     template = 'dashboard/CategoriePlats/CategoriePlats.html'
     return render(request, template, context)
@@ -139,11 +149,14 @@ def categorie_plat_view(request):
 
 @login_required
 def categorieplat_add_view(request):
+    restaurant = User.objects.get(email=request.user.email)
     if request.method =='POST':
         form = PlatCategorieForm(request.POST)
         if form.is_valid():
+            obj =form.save(commit=False)
+            obj.restaurant = restaurant
             form.save()
-            messages.success(request, "Votre categorie plat a été ajouté avec succés")
+            messages.success(request, "Votre cateorie de plat a été ajoutée avec succés")
             return redirect('dashboard:categorie_plat')
     else:
         form = PlatCategorieForm()
@@ -151,13 +164,31 @@ def categorieplat_add_view(request):
     template='dashboard/CategoriePlats/CategoriePlats_add.html'
     return render(request, template, context)
 
+
+
+
+
 @login_required
 def categorieplat_delete_view(request, slug=None):
     categorieplat = get_object_or_404( Categorie, slug=slug)
     categorieplat.delete()
-    messages.success(request, "ce catégorie de plat a été supprimé avec succés")
+    messages.success(request, "ce catégorie de plat a été supprimée avec succès")
     return redirect('dashboard:categorie_plat')
 
+@login_required
+def platcat_modif_view(request, slug=None):
+    platcat = get_object_or_404(Categorie, slug=slug)
+    if request.method =='POST':
+        form = PlatCategorieForm(request.POST, request.FILES, instance=platcat)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Votre categorie plat a été modifié avec succès")
+            return redirect('dashboard:categorie_plat')
+    else:
+        form = PlatForm(instance=platcat)
+    context = {'form':form, 'platcat':platcat}
+    template = 'dashboard/CategoriePlats/CategoriePlatsModif.html'
+    return render(request, template, context)
 
 
 
@@ -182,7 +213,7 @@ def restaurant_modif_view(request, id=id):
         form = UserForm(request.POST, request.FILES, instance=restaurant)
         if form.is_valid():
             form.save()
-            messages.success(request, "les infos de votre restaurant a été modifié avec succés")
+            messages.success(request, "les infos de votre restaurant ont été modifiées avec succès")
             return redirect('dashboard:restaurant_home')
     else:
         form = UserForm(instance=restaurant)
@@ -191,33 +222,6 @@ def restaurant_modif_view(request, id=id):
     return render(request, template, context)
 
 
-
-
-# @login_required
-# def restaurant_detail_view(request, id=id):
-#     restaurant = get_object_or_404(User, id=id)
-#     context = {'restaurant':restaurant}
-#     template = 'dashboard/restaurant-detail.html'
-#     return render(request, template, context)
-
-
-
-
-
-# @login_required
-# def restaurant_delete_view(request, id=id):
-#     restaurant = get_object_or_404(User, id=id)
-#     restaurant.delete()
-#     messages.success(request, "ce restaurant a été supprimé avec succés")
-#     return redirect('dashboard:restaurants')
-
-
-# @login_required
-# def client_view(request):
-#     clients = User.objects.filter (role="client")
-#     context = {'clients':clients}
-#     template = 'dashboard/client.html'
-#     return render(request, template, context)
 
 
 
@@ -240,7 +244,7 @@ def contact_detail_view(request):
 def contact_delete_view(request, id=id):
     contact = get_object_or_404(Contact, id=id)
     contact.delete()
-    messages.success(request, "ce contact a été supprimé avec succés")
+    messages.success(request, "ce contact a été supprimé avec succès")
     return redirect('dashboard:contact')
 
 
@@ -249,7 +253,7 @@ def contact_delete_view(request, id=id):
 def blog_delete_view(request, slug=None):
     blog = get_object_or_404(Blog, slug=slug)
     blog.delete()
-    messages.success(request, "ce blog a été supprimé avec succés")
+    messages.success(request, "ce blog a été supprimé avec succès")
     return redirect('dashboard:blog')
 
 
@@ -262,7 +266,7 @@ def blog_delete_view(request, slug=None):
 def blog_categorie_delete_view(request, slug=None):
     blogcategorie = get_object_or_404(BlogCategorie, slug=slug)
     blogcategorie.delete()
-    messages.success(request, "cette categorie de blog a été supprimée avec succés")
+    messages.success(request, "cette categorie de blog a été supprimée avec succès")
     return redirect('dashboard:blog_categorie')
 
 
@@ -271,7 +275,7 @@ def blog_categorie_delete_view(request, slug=None):
 def equipe_delete_view(request, id=None):
     equipe = get_object_or_404(Team, id=id)
     equipe.delete()
-    messages.success(request, "ce equipe a été supprimé avec succés")
+    messages.success(request, "cette équipe a été supprimée avec succès")
     return redirect('dashboard:equipe')
 
 
@@ -316,7 +320,7 @@ def blog_modif_view(request, slug=None):
         form = BlogForm(request.POST, request.FILES, instance=blog)
         if form.is_valid():
             form.save()
-            messages.success(request, "Votre blog a été modifié avec succés")
+            messages.success(request, "Votre blog a été modifié avec succès")
             return redirect('dashboard:blog')
     else:
         form = BlogForm(instance=blog)
@@ -332,7 +336,7 @@ def blog_categorie_modif_view(request, slug=None):
         form = BlogCategorieForm(request.POST, instance=blogcategorie)
         if form.is_valid():
             form.save()
-            messages.success(request, "Votre categorie de blog a été modifié avec succés")
+            messages.success(request, "Votre categorie de blog a été modifiée avec succès")
             return redirect('dashboard:blog_categorie')
     else:
         form = BlogCategorieForm(instance=blogcategorie)
@@ -349,7 +353,7 @@ def equipe_modif_view(request, id=None):
         form = TeamForm(request.POST,request.FILES, instance=equipe)
         if form.is_valid():
             form.save()
-            messages.success(request, "Votre equipe a été modifié avec succés")
+            messages.success(request, "Votre équipe a été modifiéé avec succès")
             return redirect('dashboard:equipe')
     else:
         form = TeamForm(instance=equipe)
@@ -414,7 +418,7 @@ def blog_add_view(request):
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.success(request, "Votre blog a été ajouté avec succés")
+            messages.success(request, "Votre blog a été ajouté avec succès")
             return redirect('dashboard:blog')
     else:
         form = BlogForm()
@@ -428,7 +432,7 @@ def blog_categorie_add_view(request):
         form = BlogCategorieForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Votre categorie blog a été ajouté avec succés")
+            messages.success(request, "Votre categorie blog a été ajoutée avec succès")
             return redirect('dashboard:blog_categorie')
     else:
         form = BlogCategorieForm()
@@ -446,64 +450,13 @@ def equipe_add_view(request):
         form = TeamForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Votre equipe a été ajouté avec succés")
+            messages.success(request, "Votre équipe a été ajoutée avec succès")
             return redirect('dashboard:equipe')
     else:
         form = TeamForm()
     context = {'form':form}
     template='dashboard/equipe-add.html'
     return render(request, template, context)
-
-
-
-
-# @login_required
-# def commande_view(request):
-#     commandes = Commande.objects.all()
-#     context = {'commandes':commandes}
-#     template = 'dashboard/commandes.html'
-#     return render(request, template, context)
-
-
-
-# @login_required
-# def commande_detail_view(request, id=None):
-#     commande = get_object_or_404(Commande, id=id)
-#     context = {'commande':commande}
-#     template = 'dashboard/commande-detail.html'
-#     return render(request, template, context)
-
-
-
-# @login_required
-# def commande_add_view(request):
-#     if request.method =='POST':
-#         form = CommandeForm(request.POST)
-#         if form.is_valid():
-#             obj =form.save(commit=False)
-#             # ref est un champ du model commande et 
-#             # random_string est une fonction definie 
-#             # au debut du model. 4 pour que le champ
-#             # prendra au moins 4 caractères
-#             obj.ref = random_string(4)
-#             form.save()
-#             messages.success(request, "Votre commande a été ajouté avec succés")
-#             return redirect('dashboard:commande')
-#     else:
-#         form = CommandeForm()
-#     context = {'form':form}
-#     template='dashboard/commande-add.html'
-#     return render(request, template, context)
-
-
-# @login_required
-# def commande_delete_view(request, id=None):
-#     commande = get_object_or_404(Commande, id=id)
-#     commande.delete()
-#     messages.success(request, "cette commande a été supprimée avec succés")
-#     return redirect('dashboard:commande')
-
-
 
 
 
@@ -518,52 +471,5 @@ def profil_view(request):
     context = {'profils':profils}
     template = 'dashboard/profil.html'
     return render(request, template, context)
-
-
-
-# @login_required
-# def menu_view(request):
-#     menus = Menu.objects.all()
-#     context = {'menus':menus}
-#     template = 'dashboard/menus.html'
-#     return render(request, template, context)
-
-
-
-
-
-# def panier_add_view(request):
-#     if request.method=="POST":
-#         if request.user.is_authenticated:
-#             men_id=int(request.POST.get('menus_id'))
-#             menus_check = Menu.objects.get(id=men_id)
-#             if(menus_check):
-#                 if(Panier.objects.filter(user=request.user.id, menu=men_id)):
-#                     return JsonResponse({'status':"Le menus existe déjà au panier"})
-#                 else:
-#                     user_instance = User.objects.get(email=request.user)
-#                     # men_qtite=str(request.POST.get('menu_qtite')) 
-#                     # if menus_check.quantite >= men_qtite:
-#                     Panier.objects.create(user=user_instance, menu=menus_check) 
-#                     return JsonResponse({'status':"Produit ajouté avec succès"})
-#                     # else:
-#                     #     JsonResponse({'status':"Seulement" + str(menus_check.quanite + "quanité non valable")})       
-#             else:
-#                 return JsonResponse({'status':"Aucun menu trouvé"})
-#         else:
-#             return JsonResponse({'status':'connecter pour continuer'})
-            
-#     return redirect('/')
-    
-   
-# def panier_view(request):
-#     cart =Panier.objects.filter(user=request.user)
-#     context = {'cart':cart}
-#     template ='cart.html'
-#     return render(request, template, context)
-
-
-
-
 
 

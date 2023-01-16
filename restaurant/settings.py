@@ -12,11 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
-from re import T
-from telnetlib import AUTHENTICATION
-from tokenize import Triple
-
-from requests import session
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -93,7 +88,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'restaurant.wsgi.application'
 
-CART_SESSION_ID = 'cart'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

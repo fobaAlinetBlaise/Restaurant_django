@@ -22,7 +22,7 @@
     <title>Restaurant | {% block title %}{% endblock %}</title>
 
     <!--====== FAVICON ICON =======-->
-    <link rel="shortcut icon" type="image/ico" href="{% static 'assets/img/favicon.png' %}" />
+    {% comment %} <link rel="shortcut icon" type="image/ico" href="{% static 'assets/img/favicon.png' %}" /> {% endcomment %}
 
     <!--====== STYLESHEETS ======-->
     <link rel="stylesheet" href="{% static 'assets/css/normalize.css' %}">
@@ -95,18 +95,7 @@
 
     <!--===== ACTIVE JS=====-->
     <script src="{% static 'assets/js/main.js' %}"></script>
-    <script src="{% static 'assets/js/main.js' %}"></script>
-    <script src="{% static 'assets/js/customer.js' %}"></script>
-     {% comment %} permet d'appeler le js facilement dans certaines pages {% endcomment %}
     {% block extra_javascript %} {% endblock %}
-    {% comment %} alertify js {% endcomment %}
-    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-    <script>
-        alertify.set('notifier','position', 'top-right');
-        {% for msg in message %}
-        alertify.success('{{ msg }}');
-        {% endfor %}
-    </script>
 </body>
 
 

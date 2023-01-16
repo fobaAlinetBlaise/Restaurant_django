@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="blog-comments wow fadeIn">
-                        <h4>Comments <a href="#" class="comment-count">({{blog.comment_blog.count}})</a></h4>
+                        <h4>Commentaire <a href="#" class="comment-count">({{blog.comment_blog.count}})</a></h4>
                         <div class="blog-comments wow fadeIn">
                             {% for comment in blog.comment_blog.all %}
                             <div class="row">
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <div class="comment-box wow fadeIn">{% include 'message.html' %}
-                        <h4>Leave A Comment</h4>
+                        <h4>Voulez-vous commentez ?veuillez remplir les informations ci-dessous</h4>
                         <form action="#" method="POST">{% csrf_token %}
                             <div class="col-md-12">
                                 <div class="form-group">

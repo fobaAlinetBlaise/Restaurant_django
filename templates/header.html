@@ -11,19 +11,19 @@
                     </div>
                     <div class="col-md-5 col-lg-6 col-sm-4">
                         <div class="book-table-popup">
-                             {% if request.user.is_authenticated %}
-                                {% if request.user.is_superuser %}
-                                <a href="{% url 'dashboard:home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.first_name }}  {{ user.last_name }}</a>
-                                {% elif request.user.role == "restaurateur" %}
-                                <a href="{% url 'dashboard:restaurant_home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.name }}</a>
-                                {% elif request.user.role == "client" %}
-                                    <a href="{% url 'dashboard:client_home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.first_name }}   {{ user.last_name }}</a>
-                                {% endif %}
-                            <a href="{% url 'account_logout' %}" data-toggle="modal"><i class="fa fa-sign-in "></i>Déconnexion</a>
-                            {% else %}
-                            <a href="{% url 'account_login' %}" data-toggle="modal"><i class="fa fa-sign-in "></i>Connexion</a>
-                            <a href="{% url 'account_signup' %}" data-toggle="modal"><i class="fa fa-sign-out"></i>Inscription</a>
+                            {% if request.user.is_authenticated %}
+                            {% if request.user.is_superuser %}
+                            <a href="{% url 'dashboard:home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.first_name }}  {{ user.last_name }}</a>
+                            {% elif request.user.role == "restaurateur" %}
+                            <a href="{% url 'dashboard:restaurant_home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.name }}</a>
+                            {% elif request.user.role == "client" %}
+                                <a href="{% url 'dashboard:client_home' %} " data-toggle="modal"><i class="fa fa-user "></i>{{ user.first_name }}   {{ user.last_name }}</a>
                             {% endif %}
+                        <a href="{% url 'account_logout' %}" data-toggle="modal"><i class="fa fa-sign-in "></i>Déconnexion</a>
+                        {% else %}
+                        <a href="{% url 'account_login' %}" data-toggle="modal"><i class="fa fa-sign-in "></i>Connexion</a>
+                        <a href="{% url 'account_signup' %}" data-toggle="modal"><i class="fa fa-sign-out"></i>Inscription</a>
+                        {% endif %}
                         </div>
                     </div>
                 </div>
@@ -42,31 +42,24 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        {% comment %} <a href="#home" class="navbar-brand"><img src="{% static 'assets/img/FOBA_-removebg-preview.png' %}" style="width: 70px;height: 70px;" alt="logo"></a> {% endcomment %}
-                        {% comment %} <a href="#home" class="navbar-brand white"><img src="{% static 'assets/img/FOBA_-removebg-preview.png' %}" style="width: 70px;height: 70px;" alt="logo"></a> {% endcomment %}
+                        {% comment %} <a href="#home" class="navbar-brand"><img src="img/main_logo_black.png" alt="logo"></a>
+                        <a href="#home" class="navbar-brand white"><img src="img/main_logo.png" alt="logo"></a> {% endcomment %}
+                    </div>
+                    <div class="collapse navbar-collapse bs-example-js-navbar-scrollspy">
+                        <ul id="nav" class="nav navbar-nav">
+                            <li class=""><a href="/">Acceuil</a> </li>
+                            {% comment %} <li><a href="{% url 'about' %}">A propos de nous</a></li> {% endcomment %}
+                            <li><a href="{% url 'restaurant' %}">Restaurants</a></li>
+                            <li><a href="{% url 'menu' %}">Menus</a></li>
+                            {% comment %} <li><a href="{% url 'team' %}">Equipe</a></li> {% endcomment %}
+                            <li><a href="{% url 'blog' %}">Blogs</a></li>
+                            <li><a href="{% url 'contact' %}">Contact</a></li>
+                            <li ><a  href="{% url 'cart_detail' %}"><i class="fa fa-shopping-cart"></i><span class="text-light">({{MY_PANIER_LIST}})</span></a></li>
+                        </ul>
                     </div>
                 </div>
             </nav>
-            <div class="collapse navbar-collapse bs-example-js-navbar-scrollspy"  style="margin-top:-250px">         
-                <ul id="nav" class="nav navbar-nav">
-                    <li class="active"><a href="/">Acceuil</a> </li>
-                    <li><a href="{% url 'about' %}">A propos de nous</a></li>
-                    <li><a href="{% url 'restaurant' %}">Restaurants</a></li>
-                    <li><a href="{% url 'menu' %}">Menus</a></li>
-                    <li><a href="{% url 'team' %}">Equipe</a></li>
-                    <li><a href="{% url 'blog' %}">Blogs</a></li>
-                    <li><a href="{% url 'contact' %}">Contact</a></li>
-                    <li ><a  href="{% url 'cart_detail' %}"><i class="fa fa-shopping-cart"></i><span class="text-light">({{MY_PANIER_LIST}})</span></a></li>
-                </ul>
-            </div>
         </div>
         <!--END MAINMENU AREA END-->
     </div>
-
 </header>
-
-
-
-
-
-

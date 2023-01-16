@@ -25,17 +25,13 @@ class PlatForm(forms.ModelForm):
         fields= [
             'name',
             'price',
-            'quantite',
             'image',
-            'categorie',
-            'restaurant',
+            'quantite',
             'description',
-            'status',
         ]
         
         Widgets= {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'restaurant': forms.TextInput(attrs={'class': 'form-control'}),
             'price': forms.TextInput(attrs={'class': 'form-control'}),
             'quantite': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.TextInput(attrs={'class': 'form-control', 'row':1, 'cols':30}),
@@ -47,8 +43,6 @@ class PlatCategorieForm(forms.ModelForm):
         model= Categorie
         fields= [
             'name',
-            'restaurant',
-            'status',
         ]
 
 

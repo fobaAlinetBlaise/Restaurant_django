@@ -19,6 +19,9 @@ def home_view(request):
     team = Team.objects.all()
     blogs = Blog.objects.filter(status=True)
     menus = Menu.objects.filter(status=True)
+    paginator = Paginator(menus, 4)
+    page = request.GET.get('page')
+    menus = paginator.get_page(page)
     context = {'restaurants':restaurants,
                'team':team,
                'blogs':blogs,
@@ -60,7 +63,7 @@ def blog_detail_view(request, slug=None):
             obj= form.save(commit=False)
             obj.blog = blog
             form.save()
-            messages.success(request, "Votre commentaire a été posté avec succés")
+            messages.success(request, "Votre commentaire a été posté avec succès")
             # pour dire rediriger sur la page courant
             return redirect(request.META['HTTP_REFERER'])
     else:
@@ -127,7 +130,7 @@ def contact_view(request):
         form = ContactForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Votre message a été envoyé avec succés")
+            messages.success(request, "Votre message a été envoyé avec succès")
             return redirect('/contact')
     else:
         form = ContactForm()
@@ -159,122 +162,6 @@ def menu_view(request):
     context={'menus':menus}
     template ='menu.html'
     return render(request, template, context)
-
-
-
-
-# def panier_view(request):
-#     context={}
-#     template='panier.html'
-#     return render(request, template, context)
-
-
-
-# def panier_add_view(request):
-#     if request.method=="POST":
-#         if request.user.is_authenticated:
-#             men_id=int(request.POST.get('menus_id'))
-#             menus_check = Menu.objects.get(id=men_id)
-#             if(menus_check):
-#                 if(Panier.objects.filter(user=request.user.id, menu=men_id)):
-#                     return JsonResponse({'status':"Le menus existe déjà au panier"})
-#                 else:
-#                     user_instance = User.objects.get(email=request.user)
-#                     # men_qtite=str(request.POST.get('menu_qtite')) 
-#                     # if menus_check.quantite >= men_qtite:
-#                     Panier.objects.create(user=user_instance, menu=menus_check) 
-#                     return JsonResponse({'status':"Produit ajouté avec succès"})
-#                     # else:
-#                     #     JsonResponse({'status':"Seulement" + str(menus_check.quanite + "quanité non valable")})       
-#             else:
-#                 return JsonResponse({'status':"Aucun menu trouvé"})
-#         else:
-#             return JsonResponse({'status':'connecter pour continuer'})
-            
-#     return redirect('/')
-      
-# def panier_view(request):
-#     cart =Panier.objects.filter(user=request.user.id)
-#     context = {'cart':cart}
-#     template ='cart.html'
-#     return render(request, template, context)
-
-      
-# def checkoute(request):
-#     context = {}
-#     template ='checkout.html'
-#     return render(request, template, context)
-
-
-
-
-
-
-
-
-# @login_required
-# def cart_add(request, id):
-#     cart = Cart(request)
-#     product = Menu.objects.get(id=id)
-#     cart.add(product=product)
-#     return redirect(request.META['HTTP_REFERER'])
-
-
-
-
-# @login_required
-# def item_clear(request, id):
-#     cart = Cart(request)
-#     product = Menu.objects.get(id=id)
-#     cart.remove(product)
-#     return redirect("cart_detail")
-    
-
-
-
-
-# @login_required
-# def item_increment(request, id):
-#     cart = Cart(request)
-#     product = Menu.objects.get(id=id)
-#     cart.add(product=product)
-#     return redirect("cart_detail")
-
-
-# @login_required
-# def item_decrement(request, id):
-#     cart = Cart(request)
-#     # if cart == 1:
-#     #     return messages.success(request, "La quantité minimum doit être 1")
-    
-#     product = Menu.objects.get(id=id)
-#     cart.decrement(product=product)
-#     return redirect("cart_detail")
-
-
-
-
-
-
-
-# @login_required
-# def cart_clear(request):
-#     cart = Cart(request)
-#     cart.clear()
-#     return redirect("cart_detail")
-
-
-
-
-
-
-
-# @login_required
-# def cart_detail(request):
-#     return render(request, 'cart.html')
-
-
-
 
 
 
@@ -317,9 +204,8 @@ def cart_commander_view(request):
         )
  # vider le panier si la commande s'est passée avec succès
     Panier.objects.filter(user=user_panier).delete()
-    messages.success(request, "Commander avec sucèss")
+    messages.success(request, "Commande effectuée avec succès")
     return redirect('menu')
-
 
 
 
@@ -327,12 +213,12 @@ def cart_commander_view(request):
 def cart_ajouter_view(request, id=id):
     menu_id = get_object_or_404(Menu, id=id)
     if Panier.objects.filter(menu=menu_id).exists():
-        messages.error(request, "Produit exist deja")
+        messages.error(request, "Produit existe déjà")
         return redirect(request.META['HTTP_REFERER'])
     else:
         user_panier = User.objects.get(email=request.user.email)
         Panier.objects.create(menu=menu_id, user=user_panier)
-        messages.success(request, "Produit ajouté avec sucess")
+        messages.success(request, "Produit ajouté avec succès")
         return redirect(request.META['HTTP_REFERER'])
     # return redirect(request.META['HTTP_REFERER'])
 
@@ -344,7 +230,7 @@ def cart_ajouter_view(request, id=id):
 def cart_delete_produit_view(request, id=id):
     order = get_object_or_404(Panier, id=id)
     order.delete()
-    messages.success(request, "Produit suprimé avec sucess")
+    messages.success(request, "Produit suprimé avec succès")
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -355,7 +241,7 @@ def cart_delete_produit_view(request, id=id):
 def cart_delete_panier_view(request):
     user_panier = User.objects.get(email=request.user.email)
     Panier.objects.filter(user=user_panier).delete()
-    messages.success(request, "Panier suprimé avec sucèss")
+    messages.success(request, "Panier suprimé avec succès")
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -376,7 +262,7 @@ def cart_increment_view(request, id):
 def cart_decrement_view(request, id):
     produit = get_object_or_404(Panier, id=id)
     if produit.quantite <= 1:
-        messages.error(request, "Produit ne peut pas etre en dessous de 1")
+        messages.error(request, "quantité du produit ne peut être en dessous de 1")
         return redirect(request.META['HTTP_REFERER'])
     produit.quantite -= 1 
     produit.save()

@@ -16,16 +16,6 @@ from django.core import validators
 
 from requests import request
 
-# Create your models here.
-
-# def renomer_image(instance, filename):
-#     upload_to = 'image/'
-#     ext = filename.split('.')[-1]
-#     if instance.user.username:
-#         filename = "photo/{}.{}".format(instance.user.username, ext)
-#     return os.path.join(upload_to, filename)
-
-
 def random_string(num):
     res = ''.join(secrets.choice(string.ascii_letters + string.digits) for x in range(num))
     return str(res)
@@ -88,13 +78,14 @@ JOUR = (
 
 class User(AbstractBaseUser, PermissionsMixin):
     name       = models.CharField(max_length=250, blank=True, null=True, unique=True)
-    first_name = models.CharField(max_length=250, blank=True, null=True, unique=True)
-    last_name = models.CharField(max_length=250, blank=True, null=True, unique=True)
+    first_name = models.CharField(max_length=250, blank=True, null=True)
+    last_name = models.CharField(max_length=250, blank=True, null=True)
     email     = models.EmailField(max_length=200, unique=True, validators = [validators.EmailValidator()])
     photo     = models.ImageField(upload_to='images', blank=True, null=True)
     address   = models.CharField(max_length=200, blank=True, null=True)
     description= models.TextField(max_length=200, blank=True, null=True)
-    phone     = models.CharField(max_length=20, blank=True, null=True, unique=True)
+    phone     = models.CharField(max_length=20, blank=True, null=True)
+    # nni       = models.CharField(max_length=20, blank=True, null=True, unique=True)
     start_date= models.CharField(max_length=200, default='', choices = JOUR,  blank=True, null=True)
     end_date  = models.CharField(max_length=200, default='', choices = JOUR,  blank=True, null=True)
     is_staff  = models.BooleanField(default=False)
@@ -107,6 +98,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+    
 
 
 
@@ -135,6 +127,8 @@ class Profil(models.Model):
     
     def __str__(self):
         return self.user.email
+    
+    
 
 # sauvegarde automatiquement les infos lorsque on creer un superuser
 @receiver(post_save, sender=User)
@@ -155,6 +149,9 @@ class Categorie(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ["-Timestamp",]
 
 # permet de mettre de mettre (-) entre les mots
 def create_cateorie_slug(instance, new_slug=None):
@@ -195,6 +192,8 @@ class Menu(models.Model):
 
     def __str__(self):
         return self.name
+    class Meta:
+        ordering = ["-Timestamp",]
 
 def create_menu_slug(instance, new_slug=None):
     slug=slugify(instance.name)
@@ -209,54 +208,7 @@ def create_menu_slug(instance, new_slug=None):
 def presave_menu(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_menu_slug(instance)
-pre_save.connect(presave_menu, sender=Menu)
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-# class Menu(models.Model):
-#     name = models.CharField(max_length = 200,null=False, blank = False, unique=True)
-#     price = models.FloatField(default=0, null=False, blank = False)
-#     categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, blank=False, null=False)
-#     restaurant = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
-#     image = models.ImageField(upload_to='images', blank=False, null=False)
-#     quantite = models.IntegerField(blank=True, default=1, null=True)
-#     description = models.TextField(blank=False, null=False)
-#     Timestamp = models.DateTimeField(auto_now=False, auto_now_add=True)
-#     updated   = models.DateTimeField(auto_now=True, auto_now_add=False)
-#     status    = models.BooleanField(default=True)
-#     slug = models.SlugField(max_length=200, blank=True, null=True, editable=False, unique=False)
-
-#     def __str__(self):
-#         return self.name
-
-# def create_menu_slug(instance, new_slug=None):
-#     slug=slugify(instance.name)
-#     if new_slug is not None:
-#         slug = new_slug
-#     ourQuery = Menu.objects.filter(slug= slug)
-#     exists = ourQuery.exists()
-#     if exists:
-#         new_slug = "%s-%s" % (slug, ourQuery.first().id)
-#         return create_menu_slug(instance, new_slug=new_slug)
-#     return slug
-# def presave_menu(sender, instance, *args, **kwargs):
-#     if not instance.slug:
-#         instance.slug = create_menu_slug(instance)
-# pre_save.connect(presave_menu, sender=Menu)
- 
- 
- 
- 
- 
- 
- 
+pre_save.connect(presave_menu, sender=Menu) 
 
 
 
@@ -278,6 +230,9 @@ class Commande(models.Model):
 
     def __str__(self):
         return self.menu.name
+    
+    class Meta:
+        ordering = ("-Timestamp",)
 
 
 # partie permettant de calculer le prix total d'un produit
@@ -297,6 +252,9 @@ class BlogCategorie(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ["-Timestamp",]
 
 def create_blogcategorie_slug(instance, new_slug=None):
     slug=slugify(instance.name)
@@ -396,6 +354,10 @@ class Panier(models.Model):
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     quantite = models.IntegerField(blank=True, null=True, default=1)
     date_ajout = models.DateTimeField(auto_now=False, auto_now_add=True)
+    
+    
+    def __str__(self):
+        return self.menu.name
     
     def multiply(self):
         produit = self.menu.price

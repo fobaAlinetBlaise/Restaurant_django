@@ -26,12 +26,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row g-2">
-                        <div class="col-sm-4">
-                            <div class="search-box">
-                                <input type="text" class="form-control" placeholder="Search">
-                                <i class="ri-search-line search-icon"></i>
-                            </div>
-                        </div>
+                        
                         <!--end col-->
                         <div class="col-sm-auto ms-auto">
                             <div class="list-grid-nav hstack gap-1">
@@ -78,7 +73,7 @@
                                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink5">
                                                                 <li><a href="{% url 'dashboard:plat_detail' slug=plat.slug %}" class="dropdown-item remove-item-btn"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> Details</a></li>
                                                                 <li><a class="dropdown-item" href="{% url 'dashboard:plat_modif' slug=plat.slug %}"><i class="ri-star-line me-2 align-middle"></i>Modifier</a></li>
-                                                                <li class="text-danger"><a class="dropdown-item remove-item-btn text-danger" href="{% url 'dashboard:plat_delete' slug=plat.slug %}"><i class="text-dange ri-delete-bin-fill align-bottom me-2 text-muted"></i> Supprimer</a></li>
+                                                                <li class="text-danger"><a class="dropdown-item remove-item-btn text-danger" href="{% url 'dashboard:plat_delete' slug=plat.slug %}" onclick="return confirm('êtes vous sùr de supprimer?')"><i class="text-dange ri-delete-bin-fill align-bottom me-2 text-muted"></i> Supprimer</a></li>   
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -93,10 +88,9 @@
                                                             {% endif %}
                                                         </div>
                                                         <div class="team-content">
-                                                            <h5 class="fs-16 mb-1">{{plat.restaurant.name}} </h5>
-                                                            <a data-bs-toggle="offcanvas" href="#offcanvasExample" aria-controls="offcanvasExample">
-                                                                <h5 class="fs-16 mb-1">{{plat.categorie.name}} </h5><h5 class="fs-16 mb-1">{{plat.price}}  Fcfa </h5>
                                                                 <h5 class="fs-16 mb-1">{{plat.name}} </h5><h5 class="fs-16 mb-1"></h5>
+                                                                <a data-bs-toggle="offcanvas" href="#offcanvasExample" aria-controls="offcanvasExample">
+                                                                <h5 class="fs-16 mb-1">{{plat.categorie.name}} </h5><h5 class="fs-16 mb-1">{{plat.price}}  Fcfa </h5>
                                                             </a>
                                                         </div>
                                                     </div>

@@ -20,7 +20,7 @@
                                         <h4>{{men.restaurant.name}}</h4>
                                         <h5>{{men.name}}</h5>
                                         <h5 class="text-danger">Prix: {{men.price}} Fcfa</h5>
-                                        <button class="read-more"   style="font-size: 10px;width: 100px;"><a href="{% url 'cart_ajouter' men.id %}">Ajouter</a></button>
+                                        <button class="read-more" style="font-size: 12px;width: 100px;"><a href="{% url 'cart_ajouter' men.id %}">Ajouter</a></button>
                                     </div>
                                 </div>
                                  </form>
@@ -31,7 +31,28 @@
                 </div> 
             </div>
         </div>
+        <div class="row mt-3">
+            <div class="col-md-3 offset-md-4">
+                <ul class="pagination">
+                    {% if menus.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ menus.previous_page_number }}">Précédant</a>
+                    </li>
+                    {% endif %}
+    
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ menus.number }}">{{menus.number}}</a>
+                    </li>
+                    {% if menus.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ menus.next_page_number }}">Suivant</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
     </div>
+    
 </section>
 <!--SPEACIAL PROMOTIONS AREA END-->
 
@@ -46,13 +67,13 @@
             <div class="pogoSlider">
                 <div class="pogoSlider-slide" data-transition="fade" data-duration="1500" style="background:url(static/assets/img/slider/slide_11.JPG) no-repeat scroll 0 0 / cover;">
                     <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Bienvenue</h2>
-                    <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500">Plateforme de gestion de restaurants</h1>
-                    <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'restaurant'%} " data-toggle="modal">Voir Maintenant</a></h3>
+                    <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500"></h1>
+                    <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'restaurant'%} " data-toggle="modal">Nos Restaurants</a></h3>
                 </div>
-                <div class="pogoSlider-slide" data-transition="fade" style="background:url(static/assets/img/slider/m1.jpg) no-repeat scroll 0 0 / cover;">
-                    <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Nos menus</h2>
-                    <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500">Voir ce qu’il y a dans nos restaurants</h1>
-                    <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'menu'%}">Menus du jour</a></h3>
+                <div class="pogoSlider-slide" data-transition="fade" style="background:url(static/assets/img/slider/slide_1.jpg) no-repeat scroll 0 0 / cover;">
+                    <h2 class="pogoSlider-slide-element" data-in="slideDown" data-out="flipX" data-duration="700">Bienvenue</h2>
+                    <h1 class="pogoSlider-slide-element" data-in="expand" data-out="flipX" data-duration="1500"></h1>
+                    <h3 class="pogoSlider-slide-element" data-in="slideUp" data-out="flipX" data-duration="700"><a href="{%url 'menu'%}">Nos Menus</a></h3>
                 </div>
             </div>
         </div>
